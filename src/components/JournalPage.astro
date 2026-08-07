@@ -1,0 +1,12 @@
+---
+const principles = [
+  ['Natural Materials', 'Warm woods, stone textures and honest finishes ground a workplace in nature and give it an enduring character.', '/wp-content/uploads/2025/01/Natural-material.webp'],
+  ['Sustainability', 'Eco-conscious materials and energy-efficient choices create healthier offices while reducing their environmental impact.', '/wp-content/uploads/2025/01/jpeg-optimizer_DSC07567-1.webp'],
+  ['Less Is More', 'Clear planning and restrained detailing reduce visual noise, helping people focus while allowing the architecture to breathe.', '/wp-content/uploads/2025/01/jpeg-optimizer_DSC08191.webp'],
+  ['Pops of Personality', 'Art, colour and statement details give each workplace a distinctive identity that feels true to the people who use it.', '/wp-content/uploads/2025/01/Wishlink-4.webp'],
+  ['Light as Design', 'Natural and carefully layered artificial light shape mood, support wellbeing and bring materials to life throughout the day.', '/wp-content/uploads/2025/01/DSC07207-scaled-1.jpg'],
+  ['Harmony in Contrast', 'Balancing soft and bold, dark and light, and modern and traditional creates spaces with energy, depth and cohesion.', '/wp-content/uploads/2025/01/Harmony-in-Contrast.webp'],
+];
+---
+<section class="journal-hero"><div class="container journal-hero__grid"><div><p class="eyebrow">Journal</p><h1>Office Interior Design Journal &amp; Insights</h1></div><p>In-depth ideas, industry trends and expert perspectives on modern office spaces and the future of workplace design.</p></div></section>
+<section class="section journal-principles"><div class="container"><div class="journal-principles__heading"><p class="eyebrow">Design philosophy</p><h2>Timeless Design Principles for Inspiring Workspaces</h2><p>Discover the balance of simplicity, sustainability and creativity that transforms workplaces into environments for productivity and inspiration.</p></div><nav class="journal-principles__index" aria-label="Design principles">{principles.map(([title], index) => <a href={`#principle-${index + 1}`}>{title}</a>)}</nav><div class="journal-principles__list">{principles.map(([title, copy, image], index) => <article id={`principle-${index + 1}`} class="journal-principle"><img src={image} alt={`${title} in office interior design`} width="1200" height="800" loading={index < 2 ? 'eager' : 'lazy'} /><div><span>0{index + 1}</span><h2>{title}</h2><p>{copy}</p></div></article>)}</div></div></section>

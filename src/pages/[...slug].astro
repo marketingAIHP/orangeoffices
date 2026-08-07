@@ -5,6 +5,7 @@ import PageHero from '../components/PageHero.astro';
 import AboutPage from '../components/AboutPage.astro';
 import ClientsPage from '../components/ClientsPage.astro';
 import ServicesPage from '../components/ServicesPage.astro';
+import JournalPage from '../components/JournalPage.astro';
 import { pages, services } from '../lib/site';
 import wordpressRecords from '../data/wordpress-content.json';
 
@@ -35,10 +36,11 @@ const title = record?.seoTitle || (service ? `${service[0]} | Orange Offices` : 
 const clientLogos = path === '/clients/' && record?.contentHtml ? [...record.contentHtml.matchAll(/<img[^>]+src="([^"]+)"[^>]*>/g)].map((match) => match[1]).slice(5) : [];
 ---
 <BaseLayout title={title} description={description} noindex={path === '/thank-you/'}>
-  {path !== '/about/' && path !== '/clients/' && <PageHero eyebrow={eyebrow} title={heading} description={path === '/contact/' ? undefined : description} image={record?.image} meta={record?.type === 'post' ? `Published ${record.publishedAt.slice(0, 10)}` : undefined} />}
+  {path !== '/about/' && path !== '/clients/' && path !== '/journal/' && <PageHero eyebrow={eyebrow} title={heading} description={path === '/contact/' ? undefined : description} image={record?.image} meta={record?.type === 'post' ? `Published ${record.publishedAt.slice(0, 10)}` : undefined} />}
   {path === '/about/' && <AboutPage />}
   {path === '/clients/' && <ClientsPage logos={clientLogos} />}
   {path === '/services/' && <ServicesPage />}
+  {path === '/journal/' && <JournalPage />}
 
   {path === '/contact/' && (
     <section class="section contact-section">
@@ -54,7 +56,7 @@ const clientLogos = path === '/clients/' && record?.contentHtml ? [...record.con
 
   {path !== '/contact/' && path !== '/about/' && path !== '/clients/' && path !== '/services/' && (
     <>
-      {record?.contentHtml && <section class="section content-section"><div class="container content-layout"><aside class="content-rail"><p class="eyebrow">Orange Offices</p><p>Thoughtful workplace design, planned around your people and business.</p><a class="text-link" href="/contact/">Discuss your project <span aria-hidden="true">↗</span></a></aside><article class="prose" set:html={record.contentHtml} /></div></section>}
+      {record?.contentHtml && path !== '/journal/' && <section class="section content-section"><div class="container content-layout"><aside class="content-rail"><p class="eyebrow">Orange Offices</p><p>Thoughtful workplace design, planned around your people and business.</p><a class="text-link" href="/contact/">Discuss your project <span aria-hidden="true">↗</span></a></aside><article class="prose" set:html={record.contentHtml} /></div></section>}
       {path === '/about/' && <section class="section section--dark"><div class="container feature-split"><div><p class="eyebrow">Our approach</p><h2>Spaces that work as hard as your people.</h2><p>We unite strategic planning, detailed design and reliable execution to deliver office environments with a strong sense of place.</p><a class="button button--ghost" href="/contact/">Start a conversation</a></div>{record?.image && <img src={record.image} alt="Orange Offices workspace" width="1200" height="800" loading="lazy" />}</div></section>}
       {(path === '/journal/' || blogPageNumber > 0) && <section class="section journal-archive"><div class="container"><div class="section-heading"><div><p class="eyebrow">{blogPageNumber ? `All articles · ${articles.length}` : 'Latest insights'}</p><h2>{blogPageNumber ? 'Browse the blog' : 'Latest from the journal'}</h2></div>{path === '/journal/' && <a class="journal-blog-link" href="/journal/blog/">View all {articles.length} articles <span aria-hidden="true">↗</span></a>}</div><div class="grid grid--3 article-grid">{visibleArticles.map((article) => <article class="card article-card">{article.image && <img src={article.image} alt="" width="800" height="520" loading="lazy" />}<div><p class="article-meta">{new Date(article.publishedAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</p><h3><a href={article.path}>{article.title}</a></h3><p>{article.description}</p><a class="text-link" href={article.path}>Read article <span aria-hidden="true">↗</span></a></div></article>)}</div>{blogPageNumber > 0 && totalBlogPages > 1 && <nav class="pagination" aria-label="Blog pages">{blogPageNumber > 1 && <a href={blogPageNumber === 2 ? '/journal/blog/' : `/journal/blog/page/${blogPageNumber - 1}/`}>← Previous</a>}<span>Page {blogPageNumber} of {totalBlogPages}</span>{blogPageNumber < totalBlogPages && <a href={`/journal/blog/page/${blogPageNumber + 1}/`}>Next →</a>}</nav>}</div></section>}
       {path === '/collections/' && <section class="section"><div class="container"><div class="section-heading"><p class="eyebrow">Portfolio</p><h2>Featured workplace projects</h2></div><div class="grid grid--3 project-grid">{projects.map((project) => <article class="card project-card">{project.image && <img src={project.image} alt="" width="900" height="600" loading="lazy" />}<div><p class="eyebrow">Project</p><h3><a href={project.path}>{project.title}</a></h3><a class="text-link" href={project.path}>View project <span aria-hidden="true">↗</span></a></div></article>)}</div></div></section>}
