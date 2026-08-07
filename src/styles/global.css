@@ -178,6 +178,20 @@ h2 { max-width: 26ch; }
   text-wrap: balance;
 }
 
+/* Varied expertise levels keep the progress bars intentionally irregular. */
+.home-expertise .expertise-bar:nth-of-type(1) i {
+  background: linear-gradient(90deg, var(--color-brand) 93%, var(--color-outline) 93%);
+}
+.home-expertise .expertise-bar:nth-of-type(2) i {
+  background: linear-gradient(90deg, var(--color-brand) 81%, var(--color-outline) 81%);
+}
+.home-expertise .expertise-bar:nth-of-type(3) i {
+  background: linear-gradient(90deg, var(--color-brand) 88%, var(--color-outline) 88%);
+}
+.home-expertise .expertise-bar:nth-of-type(4) i {
+  background: linear-gradient(90deg, var(--color-brand) 76%, var(--color-outline) 76%);
+}
+
 .home-stats {
   position: relative;
   width: 100%;
