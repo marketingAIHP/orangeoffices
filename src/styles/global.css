@@ -245,6 +245,40 @@ h2 { max-width: 26ch; }
   padding: 1.15rem 1.25rem;
   font-size: clamp(1.15rem, 1.6vw, 1.4rem);
 }
+.home-projects .projects-cta {
+  display: inline-flex;
+  width: auto;
+  align-items: center;
+  gap: 1rem;
+  overflow: visible;
+  color: var(--color-heading);
+  font-weight: 800;
+  text-decoration: none;
+}
+.home-projects .projects-cta > span {
+  position: static;
+  padding: 0 0 .3rem;
+  color: inherit;
+  font-size: 1rem;
+  background: none;
+  border-bottom: 2px solid var(--color-brand);
+}
+.home-projects .projects-cta > b {
+  display: grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  place-items: center;
+  color: var(--color-heading);
+  background: var(--color-brand);
+  border-radius: 50%;
+  font-size: 1.15rem;
+  transition: transform .2s ease, background-color .2s ease;
+}
+.home-projects .projects-cta:hover > b {
+  transform: translate(3px, -3px);
+  background: var(--color-heading);
+  color: var(--color-inverse);
+}
 
 :is(
   .card,
