@@ -11,6 +11,20 @@ npm run import:wordpress
 npm run migrate:media
 ```
 
+## Cloudflare Pages preview deployment
+
+Connect the GitHub repository to Cloudflare Pages with these build settings:
+
+- Production branch: `main`
+- Root directory: `/` (the repository root; do not set a subdirectory)
+- Build command: `npm run build`
+- Build output directory: `dist`
+- Node.js version: `24` (also pinned by `.node-version`)
+
+The application files must be committed and pushed before Cloudflare can build them. In particular, confirm that `package.json`, `package-lock.json`, `astro.config.mjs`, `public/`, and `src/` appear in the selected GitHub branch. A Cloudflare build error for `/opt/buildhome/repo/package.json` means the selected commit does not contain the application files; changing the npm command will not fix that.
+
+Every non-production branch deployment receives its own `*.pages.dev` preview URL. The public pages and health endpoint work without secrets. Form submissions need the `LEADS_DB` D1 and `LEAD_QUEUE` bindings configured in the Pages project; without them the endpoint intentionally returns HTTP 503.
+
 The public pages are pre-rendered; API routes remain Worker routes. Before running a Worker preview or deployment, create the D1 database, R2 bucket and Queue names defined in `wrangler.jsonc`, then replace the D1 placeholder with the ID returned by Cloudflare.
 
 ## Safety

@@ -1,0 +1,44 @@
+---
+const image = '/wp-content/uploads/2025/01/jpeg-optimizer_DSC07567-1.webp';
+const images = ['/wp-content/uploads/2025/01/jpeg-optimizer_DSC04466.webp', '/wp-content/uploads/2025/01/jpeg-optimizer_DSC08191.webp', '/wp-content/uploads/2025/01/Wishlink-4-1024x722.webp', '/wp-content/uploads/2024/12/jpeg-optimizer_DSCF6184.webp'];
+const values = [['Creativity', 'Pushing boundaries to craft unique, forward-thinking designs.'], ['Sustainability', 'Prioritising eco-friendly practices and materials in every project.'], ['Quality', 'Delivering excellence in every detail, from furniture to finishes.'], ['Timeliness', 'Respecting your time with on-schedule project completion.']];
+const audiences = [
+  ['Startups and Entrepreneurs', 'Building vibrant and functional spaces that fuel innovation.', '/wp-content/uploads/2025/01/Bespoke-2.webp'],
+  ['Corporate Offices', 'Designing sleek, professional environments that reflect business goals.', '/wp-content/uploads/2025/01/Fresenius-Kabi-India-8.webp'],
+  ['Co-Working Spaces', 'Creating adaptable layouts that cater to shared workspace needs.', '/wp-content/uploads/2025/01/Anand-rathi-4.webp'],
+  ['Small Businesses', 'Delivering smart designs that make the most of every square foot.', '/wp-content/uploads/2025/01/Services4.jpg'],
+];
+const reasons = [
+  'Experts in modern office interiors, creating smart and collaborative workplaces across Delhi NCR.',
+  'Sustainable and eco-friendly designs using responsible materials for healthier offices.',
+  'Comprehensive solutions managed from initial concept through execution and handover.',
+  'Scalable and flexible workplaces designed to grow with your business.',
+  'Tailored design concepts shaped around your brand, people and operational needs.',
+];
+const strengths = [['Custom designs, tailored to you', 'Every office we design is a unique reflection of your brand, culture and business needs.'], ['Sustainable and eco-conscious', 'We integrate energy-efficient systems, eco-friendly materials and biophilic elements.'], ['Expert team', 'Our in-house team of architects and designers brings global expertise to every project.'], ['Fast delivery', 'We understand the importance of time in business and keep delivery focused.'], ['End-to-end solutions', 'From concept development to final delivery, we handle every detail.']];
+const clients = [
+  ['Anand Rathi', '/wp-content/uploads/2025/01/4-1.jpg'],
+  ['ArcelorMittal', '/wp-content/uploads/2025/01/Group-269.jpg'],
+  ['SBI', '/wp-content/uploads/2025/01/Group-270-1.jpg'],
+  ['Mahindra', '/wp-content/uploads/2025/01/Group-276.jpg'],
+  ['DHL', '/wp-content/uploads/2025/01/Group-277.jpg'],
+  ['Hitachi', '/wp-content/uploads/2025/01/Group-273.jpg'],
+  ['OLX', '/wp-content/uploads/2025/01/Group-274.jpg'],
+  ['Del Monte', '/wp-content/uploads/2025/01/Group-275.jpg'],
+];
+---
+<section class="about-hero" style={`--about-hero: url('${image}')`}><div class="container about-hero__content"><p class="eyebrow">Orange Offices</p><h1>Your trusted office interior experts in Delhi NCR</h1><p>Orange Offices is your trusted partner in designing and building custom office spaces that inspire creativity, foster collaboration and reflect your unique vision.</p><a class="button" href="/contact/">Get in touch <span aria-hidden="true">↗</span></a></div></section>
+<section class="section about-intro"><div class="container about-intro__grid"><div><p class="eyebrow">Who we are</p><h2>Designing workplaces with a sense of purpose.</h2><p>At Orange Offices, we believe that a thoughtfully designed workspace is essential for business success. We provide end-to-end design solutions tailored to your company’s culture, objectives and operational requirements.</p></div><img src={images[0]} alt="Indagro Gurgaon office design" width="1200" height="800" loading="lazy" /></div></section>
+<section class="section about-story"><div class="container about-story__grid"><img src={images[1]} alt="Office interior design" width="1200" height="800" loading="lazy" /><div><p class="eyebrow">Our mission</p><h2>Making ambitious workplaces possible.</h2><p>To deliver innovative, functional and eco-conscious office designs tailored to each client’s unique needs, with world-class quality, exceptional customer service and considered delivery.</p></div><div><p class="eyebrow">Our vision</p><h2>Spaces where businesses can thrive.</h2><p>We envision every workspace as a dynamic hub for creativity, collaboration and productivity—built around the people who use it.</p></div><img src={images[2]} alt="Orange Offices project" width="1200" height="800" loading="lazy" /></div></section>
+<section class="about-values"><div class="container about-values__grid"><img src={images[3]} alt="Modern modular office in Gurgaon" width="1200" height="800" loading="lazy" /><div class="about-values__content"><p class="eyebrow">Our core values</p><h2>Design with intent.</h2><div class="value-grid">{values.map(([title, copy]) => <article><h3>{title}</h3><p>{copy}</p></article>)}</div></div></div></section>
+<section class="section about-audiences">
+  <div class="container">
+    <div class="about-audiences__heading"><p class="eyebrow">Who we serve</p><h2>Workplaces for every stage of growth.</h2><p>We work with a diverse range of clients, including:</p></div>
+    <div class="audience-grid">{audiences.map(([title, copy, src]) => <article class="audience-card"><img src={src} alt={`${title} office interior`} width="800" height="1000" loading="lazy" /><div><h3>{title}</h3><p>{copy}</p></div></article>)}</div>
+    <div class="about-why"><img src={images[3]} alt="Orange Offices modern workplace" width="1200" height="800" loading="lazy" /><div class="about-why__content"><p class="eyebrow">Why us</p><h2>Why choose Orange Offices?</h2><ul>{reasons.map((reason) => <li>{reason}</li>)}</ul><a class="button" href="/contact/">Discuss your project <span aria-hidden="true">↗</span></a></div></div>
+  </div>
+</section>
+<section class="about-journey"><div class="container"><div class="about-journey__copy"><p class="eyebrow">Our journey</p><h2>Workspaces that move business forward.</h2><p>Founded as an extension of AIHP’s expertise in managed office spaces, Orange Offices helps companies across Delhi NCR transform offices into places that inspire creativity, foster collaboration and drive growth.</p></div><div class="about-stats"><div><strong>600+</strong><span>Clients</span></div><div><strong>40L+</strong><span>Sq. ft. fitted out</span></div><div><strong>99%</strong><span>On-time delivery</span></div><div><strong>12+</strong><span>Years experience</span></div></div></div></section>
+<section class="section about-strengths"><div class="container"><div class="section-heading"><div><p class="eyebrow">Why Orange Offices</p><h2>What sets us apart?</h2></div></div><div class="strength-grid">{strengths.map(([title, copy]) => <article><h3>{title}</h3><p>{copy}</p></article>)}</div></div></section>
+<section class="section about-clients"><div class="container"><div class="about-clients__heading"><p class="eyebrow">Our clients</p><h2>Trusted by 600+ world-class brands and organisations.</h2></div><div class="client-logo-grid">{clients.map(([name, src]) => <div class="client-logo"><img src={src} alt={name} width="300" height="182" loading="lazy" /></div>)}</div></div></section>
+<section class="section about-cta"><div class="container"><p class="eyebrow">Create something better</p><h2>Let’s design the office you’ve always dreamed of.</h2><p>Looking for office interior experts in Delhi NCR? Let’s bring your vision to life.</p><a class="button" href="/contact/">Contact us today <span aria-hidden="true">↗</span></a></div></section>

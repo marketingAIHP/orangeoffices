@@ -1,0 +1,23 @@
+---
+interface Props { logos: string[]; }
+const { logos } = Astro.props;
+const testimonialCover = '/wp-content/uploads/2025/07/Testimonial-Cover-web-1-948x1024.webp';
+const testimonials = [
+  ['At AIHP, excellence is standard. From top-tier offices to tailored designs, every aspect exceeds expectations. Choosing AIHP was simple — simply exceptional.', 'Sudhir Sharma', 'Regional Head', '/wp-content/uploads/2024/12/Arcelormittal-logo.jpg'],
+  ['AIHP has been an invaluable partner in creating a prestigious workspace for Anand Rathi Wealth. Their professionalism, attention to detail and ability to understand our specific needs have contributed significantly to our success.', 'Mukesh Kumawat', 'Executive Director', '/wp-content/uploads/2024/12/Anand-Rathi.jpg'],
+  ['We go with AIHP because it takes care of end-to-end managed services, so we can focus on our work rather than facilities.', 'Ashish Chahda', 'CEO & Co-Founder', '/wp-content/uploads/2024/12/Advatix.jpg'],
+  ['AIHP’s attention to detail and quick delivery exceeded our expectations. Their team brought our vision to life flawlessly.', 'Sahil Chalana', 'Founder', '/wp-content/uploads/2024/12/collegedunia.jpg'],
+];
+---
+
+<section class="clients-hero">
+  <div class="container clients-hero__content"><p class="eyebrow">Our clients</p><h1>Trusted by leading global brands.</h1><p>From startups to Fortune 500s, Orange Offices has powered workspaces for businesses that value design, efficiency and reliability.</p></div>
+</section>
+
+<section class="section clients-intro"><div class="container clients-intro__grid"><div><p class="eyebrow">Client success stories</p><h2>Workspaces built around what makes business work.</h2><p>Discover why businesses choose Orange Offices for workplace design that improves how teams collaborate, grow and perform.</p><p>From fully furnished office spaces to bespoke private offices, we shape corporate environments into places that support lasting success.</p><a class="button" href="/contact/">Start a conversation <span aria-hidden="true">↗</span></a></div><img src={testimonialCover} alt="Orange Offices client workspace" width="948" height="1024" loading="lazy" /></div></section>
+
+<section class="section clients-testimonials"><div class="container"><div class="section-heading"><div><p class="eyebrow">Testimonials</p><h2>What clients say about us.</h2></div></div><div class="clients-testimonials__grid">{testimonials.map(([quote, name, role, logo]) => <article class="client-testimonial"><blockquote>“{quote}”</blockquote><footer><img src={logo} alt="" width="160" height="80" loading="lazy" /><div><strong>{name}</strong><span>{role}</span></div></footer></article>)}</div></div></section>
+
+<section class="section clients-gallery"><div class="container"><div class="clients-gallery__heading"><p class="eyebrow">Our client network</p><h2>Empowering success, one client at a time.</h2></div><div class="clients-logo-grid">{logos.map((src) => <div class="clients-logo"><img src={src} alt="Orange Offices client" width="285" height="173" loading="lazy" /></div>)}</div></div></section>
+
+<section class="section clients-cta"><div class="container"><p class="eyebrow">Create your next workplace</p><h2>Let’s bring your dream office to life.</h2><p>Partner with Orange Offices for a tailored interior design experience that puts your business goals first.</p><a class="button" href="/contact/">Contact our design team <span aria-hidden="true">↗</span></a></div></section>

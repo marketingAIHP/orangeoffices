@@ -1,0 +1,58 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ContactForm from '../components/ContactForm.astro';
+import PageHero from '../components/PageHero.astro';
+import AboutPage from '../components/AboutPage.astro';
+import ClientsPage from '../components/ClientsPage.astro';
+import ServicesPage from '../components/ServicesPage.astro';
+import { pages, services } from '../lib/site';
+import wordpressRecords from '../data/wordpress-content.json';
+
+export const prerender = true;
+export function getStaticPaths() {
+  const paths = [...Object.keys(pages), ...services.map(([, href]) => href), ...wordpressRecords.map((record) => record.path)];
+  return [...new Set(paths)].map((path) => ({ params: { slug: path.slice(1, -1) } }));
+}
+
+const path = `/${(Astro.params.slug ?? '').split('/').filter(Boolean).join('/')}/`;
+const page = pages[path];
+const record = wordpressRecords.find((item) => item.path === path);
+if (!page && !record) return Astro.redirect('/404/');
+const service = services.find(([, href]) => href === path);
+const articles = wordpressRecords.filter((item) => item.type === 'post').sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
+const projects = wordpressRecords.filter((item) => item.type === 'portfolio');
+const heading = record?.title || service?.[0] || page!.heading;
+const description = record?.description || service?.[2] || page!.intro;
+const eyebrow = service ? 'Services' : record?.type === 'post' ? 'Journal' : record?.type === 'portfolio' ? 'Selected project' : path === '/about/' ? 'Orange Offices' : record ? 'Orange Offices' : page!.eyebrow;
+const title = record?.seoTitle || (service ? `${service[0]} | Orange Offices` : page!.title);
+const clientLogos = path === '/clients/' && record?.contentHtml ? [...record.contentHtml.matchAll(/<img[^>]+src="([^"]+)"[^>]*>/g)].map((match) => match[1]).slice(5) : [];
+---
+<BaseLayout title={title} description={description} noindex={path === '/thank-you/'}>
+  {path !== '/about/' && path !== '/clients/' && <PageHero eyebrow={eyebrow} title={heading} description={path === '/contact/' ? undefined : description} image={record?.image} meta={record?.type === 'post' ? `Published ${record.publishedAt.slice(0, 10)}` : undefined} />}
+  {path === '/about/' && <AboutPage />}
+  {path === '/clients/' && <ClientsPage logos={clientLogos} />}
+  {path === '/services/' && <ServicesPage />}
+
+  {path === '/contact/' && (
+    <section class="section contact-section">
+      <div class="container contact-layout">
+        <div class="contact-layout__intro">
+          <p class="eyebrow">Office design consultation</p><h2>Let’s connect and bring your office vision to life.</h2><p>Tell us about your workspace and our team will help you take the next step.</p>
+          <address class="contact-details"><p><strong>Visit us</strong>Plot No: 448–451, Udyog Vihar Phase V Rd, Gurugram, Haryana 122016</p><p><strong>Email</strong><a href="mailto:design@orangeoffices.in">design@orangeoffices.in</a></p><p><strong>Call us</strong><a href="tel:+917861004918">+91 78610 04918</a><a href="tel:+919650383322">+91 96503 83322</a></p></address>
+        </div>
+        <div class="contact-card"><h2>Start your project</h2><ContactForm /></div>
+      </div>
+    </section>
+  )}
+
+  {path !== '/contact/' && path !== '/about/' && path !== '/clients/' && path !== '/services/' && (
+    <>
+      {record?.contentHtml && <section class="section content-section"><div class="container content-layout"><aside class="content-rail"><p class="eyebrow">Orange Offices</p><p>Thoughtful workplace design, planned around your people and business.</p><a class="text-link" href="/contact/">Discuss your project <span aria-hidden="true">↗</span></a></aside><article class="prose" set:html={record.contentHtml} /></div></section>}
+      {path === '/about/' && <section class="section section--dark"><div class="container feature-split"><div><p class="eyebrow">Our approach</p><h2>Spaces that work as hard as your people.</h2><p>We unite strategic planning, detailed design and reliable execution to deliver office environments with a strong sense of place.</p><a class="button button--ghost" href="/contact/">Start a conversation</a></div>{record?.image && <img src={record.image} alt="Orange Offices workspace" width="1200" height="800" loading="lazy" />}</div></section>}
+      {path === '/journal/' && <section class="section"><div class="container"><div class="section-heading"><p class="eyebrow">Insights</p><h2>Latest from the journal</h2></div><div class="grid grid--3 article-grid">{articles.map((article) => <article class="card article-card">{article.image && <img src={article.image} alt="" width="800" height="520" loading="lazy" />}<div><p class="article-meta">{article.publishedAt.slice(0, 10)}</p><h3><a href={article.path}>{article.title}</a></h3><a class="text-link" href={article.path}>Read article <span aria-hidden="true">↗</span></a></div></article>)}</div></div></section>}
+      {path === '/collections/' && <section class="section"><div class="container"><div class="section-heading"><p class="eyebrow">Portfolio</p><h2>Featured workplace projects</h2></div><div class="grid grid--3 project-grid">{projects.map((project) => <article class="card project-card">{project.image && <img src={project.image} alt="" width="900" height="600" loading="lazy" />}<div><p class="eyebrow">Project</p><h3><a href={project.path}>{project.title}</a></h3><a class="text-link" href={project.path}>View project <span aria-hidden="true">↗</span></a></div></article>)}</div></div></section>}
+      {!record && <section class="section service-overview"><div class="container"><div class="section-heading"><div><p class="eyebrow">Our approach</p><h2>{service ? 'A considered approach from brief to delivery.' : 'Let’s create a better workplace.'}</h2></div></div><div class="grid grid--3">{[['Discover', 'We understand your workplace, people and practical requirements.'], ['Design', 'Our team creates a purposeful design with material and cost clarity.'], ['Deliver', 'We coordinate every detail through a considered, reliable handover.']].map(([step, copy], index) => <article class="card"><span class="card__number">0{index + 1}</span><h3>{step}</h3><p>{copy}</p></article>)}</div></div></section>}
+      {path !== '/journal/' && path !== '/collections/' && <section class="section page-cta"><div class="container"><p class="eyebrow">Start your project</p><h2>Ready to create a workplace that works beautifully?</h2><p>Speak with our team about your next office space in Delhi NCR.</p><a class="button" href="/contact/">Get in touch <span aria-hidden="true">↗</span></a></div></section>}
+    </>
+  )}
+</BaseLayout>

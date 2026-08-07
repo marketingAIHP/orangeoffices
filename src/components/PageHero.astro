@@ -1,0 +1,14 @@
+---
+interface Props { eyebrow: string; title: string; description?: string; image?: string | null; meta?: string; }
+const { eyebrow, title, description, image, meta } = Astro.props;
+---
+<section class:list={['page-hero', { 'page-hero--image': image }]} style={image ? `--hero-image: url('${image}')` : undefined}>
+  <div class="container page-hero__grid">
+    <div class="page-hero__content">
+      <p class="eyebrow">{eyebrow}</p>
+      <h1>{title}</h1>
+      {description && <p class="page-hero__description">{description}</p>}
+      {meta && <p class="article-meta">{meta}</p>}
+    </div>
+  </div>
+</section>

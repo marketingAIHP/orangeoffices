@@ -1,0 +1,27 @@
+{
+  "name": "orange-offices-web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=24" },
+  "scripts": {
+    "dev": "astro dev --force",
+    "build": "astro build",
+    "preview": "wrangler dev",
+    "check": "astro build --help",
+    "import:wordpress": "node scripts/import-wordpress.mjs",
+    "migrate:media": "node scripts/migrate-legacy-media.mjs",
+    "test": "vitest run",
+    "deploy": "wrangler deploy"
+  },
+  "dependencies": {
+    "@astrojs/cloudflare": "14.1.6",
+    "astro": "7.1.5",
+    "zod": "4.4.3"
+  },
+  "devDependencies": {
+    "typescript": "7.0.2",
+    "vitest": "4.1.10",
+    "wrangler": "4.115.0"
+  }
+}

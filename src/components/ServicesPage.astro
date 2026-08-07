@@ -1,0 +1,27 @@
+---
+import { services } from '../lib/site';
+const serviceImages = [
+  '/wp-content/uploads/2025/01/Bespoke-2.webp',
+  '/wp-content/uploads/2025/01/Fresenius-Kabi-India-8.webp',
+  '/wp-content/uploads/2025/01/Anand-rathi-4.webp',
+  '/wp-content/uploads/2025/01/Services4.jpg',
+];
+const benefits = [
+  ['▥', 'Crafted for Success', 'Tailor-made office interiors designed for productivity and style.'],
+  ['♻', 'Eco-Friendly Innovation', 'Sustainable, eco-conscious solutions for modern workspaces.'],
+  ['↗', 'Fast & Reliable Delivery', 'Delivered in just 45 days by our dedicated team.'],
+  ['◇', 'Trusted Across Delhi NCR', 'Serving businesses across Delhi NCR with world-class design.'],
+];
+---
+
+<section class="section services-intro"><div class="container services-intro__grid"><img src="/wp-content/uploads/2025/01/Services4.jpg" alt="Orange Offices interior design services" width="1200" height="800" loading="eager" /><div><p class="eyebrow">What we do</p><h2>Office interiors designed around how you work.</h2><p>At Orange Offices, we specialize in delivering top-notch Office Interior Design Services in Gurgaon that redefine workspaces with elegance, functionality, and innovation. Our approach ensures that every office interior is thoughtfully designed to reflect brand identity while optimizing efficiency and productivity.</p><p>Whether you’re a startup, an established corporation, or a co-working space provider, we offer tailored solutions to meet diverse workspace requirements.</p></div></div></section>
+
+<section class="section services-showcase"><div class="container"><div class="services-showcase__heading"><p class="eyebrow">What we offer</p><h2>Creating Exceptional Workspaces in Delhi NCR</h2><p>We specialize in crafting workplace environments that inspire, innovate and drive success. Our services include:</p></div><div class="services-showcase__grid">{services.map(([title, href], index) => <a class="service-image-card" href={href}><img src={serviceImages[index]} alt={title} width="900" height="1100" loading="lazy" /><div><h3>{title}</h3></div></a>)}</div></div></section>
+
+<section class="services-banner"><div class="container"><h2>Ready to Transform Your Workspace? Let’s Bring Your Vision to Life!</h2><a class="button" href="/contact/">Get in Touch</a></div></section>
+
+<section class="section services-process"><div class="container"><p class="eyebrow">Process</p><h2>Our design journey.</h2><div class="services-process__grid">{[['Discover', 'We learn about your people, objectives and operational requirements.'], ['Design', 'We shape a workspace with clarity around materials, budgets and timelines.'], ['Deliver', 'Our team manages the journey through to a detailed, dependable handover.']].map(([title, copy], index) => <article><span>0{index + 1}</span><h3>{title}</h3><p>{copy}</p></article>)}</div></div></section>
+
+<section class="section services-benefits"><div class="container"><div class="services-benefits__heading"><p class="eyebrow">Why choose Orange Offices?</p><h2>Your Trusted Partner for Office Design</h2></div><div class="services-benefits__grid">{benefits.map(([icon, title, copy]) => <article><span aria-hidden="true">{icon}</span><h3>{title}</h3><p>{copy}</p></article>)}</div></div></section>
+
+<section class="section services-cta"><div class="container"><h2>Ready to transform your office?<br />Book a free consultation today!</h2><a class="button" href="/contact/">Get in Touch</a></div></section>

@@ -1,0 +1,20 @@
+:root {
+  --color-brand: #FF9000;
+  --color-brand-hover: #33AF00;
+  --color-heading: #292929;
+  --color-body: #3E3E3E;
+  --color-forest: #3F4B3F;
+  --color-surface: #EBEBEB;
+  --color-warm-surface: #F7F7F4;
+  --color-field: #FBFBF9;
+  --color-field-border: #D4D4CE;
+  --color-paper: #FFFFFF;
+  --color-dark: #2D322D;
+  --color-inverse: #FFFFFF;
+  --color-outline: #0000001A;
+  --font-display: Outfit, Inter, system-ui, sans-serif;
+  --font-body: Inter, system-ui, sans-serif;
+  --shadow-card: 0 18px 40px rgb(45 50 45 / 10%);
+  --radius: 1rem;
+  --container: min(1400px, calc(100% - clamp(2rem, 5vw, 6rem)));
+}
