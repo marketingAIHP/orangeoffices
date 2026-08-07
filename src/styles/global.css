@@ -267,11 +267,10 @@ h2 { max-width: 26ch; }
 }
 .home-projects .projects-cta > span {
   position: static;
-  padding: 0 0 .3rem;
+  padding: 0;
   color: inherit;
   font-size: 1rem;
   background: none;
-  border-bottom: 2px solid var(--color-brand);
 }
 .home-projects .projects-cta > b {
   display: grid;
