@@ -23,9 +23,9 @@ Connect the GitHub repository to Cloudflare Pages with these build settings:
 
 The application files must be committed and pushed before Cloudflare can build them. In particular, confirm that `package.json`, `package-lock.json`, `astro.config.mjs`, `public/`, and `src/` appear in the selected GitHub branch. A Cloudflare build error for `/opt/buildhome/repo/package.json` means the selected commit does not contain the application files; changing the npm command will not fix that.
 
-Every non-production branch deployment receives its own `*.pages.dev` preview URL. The public pages and health endpoint work without secrets. Form submissions need the `LEADS_DB` D1 and `LEAD_QUEUE` bindings configured in the Pages project; without them the endpoint intentionally returns HTTP 503.
+Every non-production branch deployment receives its own preview URL. The public pages and health endpoint work without secrets. The demo configuration deliberately has no R2, D1, or Queue bindings so it can deploy to a new Cloudflare account without provisioning paid or account-level services. Form submissions therefore return the endpoint's intentional HTTP 503 fallback.
 
-The public pages are pre-rendered; API routes remain Worker routes. Before running a Worker preview or deployment, create the D1 database, R2 bucket and Queue names defined in `wrangler.jsonc`, then replace the D1 placeholder with the ID returned by Cloudflare.
+The public pages are pre-rendered; API routes remain Worker routes. Before enabling production lead capture, create a D1 database and Queue, add their `LEADS_DB` and `LEAD_QUEUE` bindings to `wrangler.jsonc`, and apply `migrations/d1/0001_leads.sql`. Add an R2 binding separately only when migrated media is served from R2.
 
 ## Safety
 
