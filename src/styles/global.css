@@ -289,6 +289,72 @@ h2 { max-width: 26ch; }
   color: var(--color-inverse);
 }
 
+/* Journal navigation and blog archive */
+.nav-group { position: relative; }
+.nav-group > a { display: block; }
+.nav-submenu {
+  position: absolute;
+  top: calc(100% + .7rem);
+  left: 50%;
+  z-index: 30;
+  min-width: 150px;
+  padding: .45rem;
+  opacity: 0;
+  visibility: hidden;
+  background: var(--color-paper);
+  border: 1px solid var(--color-outline);
+  border-radius: .35rem;
+  box-shadow: var(--shadow-card);
+  transform: translate(-50%, .4rem);
+  transition: opacity .18s ease, transform .18s ease, visibility .18s ease;
+}
+.nav-submenu::before { position: absolute; content: ''; inset: -.8rem 0 auto; height: .8rem; }
+.nav-submenu a { display: block; padding: .7rem .85rem; color: var(--color-heading); border-radius: .2rem; }
+.nav-submenu a:hover, .nav-submenu a[aria-current='page'] { color: var(--color-heading); background: rgb(255 144 0 / 16%); }
+.nav-group:hover .nav-submenu,
+.nav-group:focus-within .nav-submenu { opacity: 1; visibility: visible; transform: translate(-50%, 0); }
+.journal-blog-link {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .75rem 1rem;
+  color: var(--color-heading);
+  background: rgb(255 144 0 / 14%);
+  border: 1px solid rgb(255 144 0 / 35%);
+  border-radius: 999px;
+  font-weight: 800;
+  text-decoration: none;
+}
+.journal-blog-link:hover { background: rgb(255 144 0 / 24%); }
+.article-card p:not(.article-meta) {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  font-size: .94rem;
+}
+.pagination {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--color-outline);
+}
+.pagination a { color: var(--color-heading); font-weight: 800; text-decoration: none; }
+.pagination a:last-child { justify-self: end; }
+.pagination span { grid-column: 2; color: var(--color-body); font-size: .9rem; }
+
+@media (max-width: 760px) {
+  .mobile-nav__group { display: grid; }
+  .mobile-nav nav .mobile-nav__child { padding: .45rem .5rem .45rem 1.5rem; color: var(--color-brand); font-size: 1rem; }
+  .journal-archive .section-heading { display: grid; gap: 1rem; }
+  .journal-blog-link { justify-self: start; }
+  .pagination { grid-template-columns: 1fr 1fr; }
+  .pagination span { grid-column: 1 / -1; grid-row: 1; text-align: center; }
+}
+
 :is(
   .card,
   .service-image-card,

@@ -2,6 +2,9 @@ export const site = 'https://orangeoffices.in';
 export const nav = [
   ['Home', '/'], ['About', '/about/'], ['Services', '/services/'], ['Journal', '/journal/'], ['Clients', '/clients/'], ['Collections', '/collections/'], ['Contact', '/contact/'],
 ] as const;
+export const navChildren: Record<string, readonly (readonly [string, string])[]> = {
+  '/journal/': [['Blog', '/journal/blog/']],
+};
 export const services = [
   ['Bespoke Office Interior Design', '/bespoke-office-interior-design/', 'Tailored workplaces that express your brand and support how teams work.'],
   ['Eco-Friendly Workspace Design', '/eco-friendly-workspace-design/', 'Responsible materials and considered planning for a healthier workplace.'],
@@ -15,6 +18,7 @@ export const pages: Record<string, { title: string; description: string; eyebrow
   '/collections/': { title: 'Office Collections | Orange Offices', description: 'Explore Orange Offices workplace design collections.', eyebrow: 'Collections', heading: 'Where every space tells a story', intro: 'Explore considered office environments that balance people, purpose and performance.' },
   '/gallery/': { title: 'Office Interior Gallery | Orange Offices', description: 'See selected Orange Offices workplace design projects.', eyebrow: 'Our gallery', heading: 'Spaces made to support better work', intro: 'A selection of our workplace projects and details. Media migration is in progress; this page will be populated from the signed asset inventory.' },
   '/journal/': { title: 'Journal | Orange Offices', description: 'Office design insights from Orange Offices.', eyebrow: 'Journal', heading: 'Ideas for better workplaces', intro: 'Practical perspectives on office interiors, materials and workplace design.' },
+  '/journal/blog/': { title: 'Office Design Blog | Orange Offices', description: 'Browse every Orange Offices article about office interiors, workplace strategy, sustainability and design.', eyebrow: 'Journal / Blog', heading: 'Office design blog', intro: 'Ideas, practical guidance and expert perspectives for creating better workplaces.' },
   '/contact/': { title: 'Contact Orange Offices', description: 'Contact Orange Offices for an office interior design consultation.', eyebrow: 'Contact', heading: 'Let’s transform your workspace', intro: 'Tell us about your office and we will help you start the conversation.' },
   '/privacy-policy/': { title: 'Privacy Policy | Orange Offices', description: 'Orange Offices privacy policy.', eyebrow: 'Legal', heading: 'Privacy policy', intro: 'Our privacy policy is being migrated from the approved production source.' },
   '/terms/': { title: 'Terms & Conditions | Orange Offices', description: 'Orange Offices terms and conditions.', eyebrow: 'Legal', heading: 'Terms & conditions', intro: 'Our terms are being migrated from the approved production source.' },
