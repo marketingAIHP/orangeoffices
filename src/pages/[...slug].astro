@@ -10,6 +10,7 @@ import ContactPage from '../components/ContactPage.astro';
 import { pages, services } from '../lib/site';
 import wordpressRecords from '../data/wordpress-content.json';
 import PostBody from '../components/PostBody.astro';
+import AnimationRuntime from '../components/AnimationRuntime.astro';
 import { getAllPosts } from '../lib/sanity/posts';
 import type { SanityPost } from '../lib/sanity/types';
 
@@ -63,4 +64,5 @@ const clientLogos = path === '/clients/' && record?.contentHtml ? [...record.con
       {path !== '/journal/' && !blogPageNumber && path !== '/collections/' && <section class="section page-cta"><div class="container"><p class="eyebrow">Start your project</p><h2>Ready to create a workplace that works beautifully?</h2><p>Speak with our team about your next office space in Delhi NCR.</p><a class="button" href="/contact/">Get in touch <span aria-hidden="true">↗</span></a></div></section>}
     </>
   )}
+  <AnimationRuntime />
 </BaseLayout>

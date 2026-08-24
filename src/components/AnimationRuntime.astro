@@ -1,0 +1,74 @@
+<script is:inline>
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const sourceMappings = [
+    ['.home-hero h1', 'fadeInUp'], ['.home-hero .hero__actions .button:first-child', 'fadeInLeft'],
+    ['.home-hero .hero__actions .button--ghost', 'fadeInRight'], ['.home-promos strong', 'fadeInUp'],
+    ['.home-promos b', 'fadeInRight'], ['.home-about .home-split > div', 'fadeInLeft'],
+    ['.home-about .home-split > img', 'fadeInDown'], ['.home-trusted .container', 'fadeInUp'],
+    ['.home-sustainability .container', 'bounceIn'], ['.home-stats .container > div', 'fadeInLeft'],
+    ['.home-services h2, .home-expertise h2, .home-process h2, .home-projects h2', 'fadeInUp'],
+    ['.home-expertise .home-split > img', 'fadeInRight'], ['.home-projects .container > div', 'fadeInUp'],
+    ['.home-testimonials h2', 'fadeInDown'], ['.home-testimonials blockquote', 'fadeIn'],
+    ['.home-gallery h2', 'fadeInDown'], ['.page-cta h2', 'fadeInDown'],
+    ['.page-hero h1, .journal-hero h1, .collections-hero h1, .contact-hero h1', 'fadeInUp'],
+    ['.page-hero .page-hero__description, .journal-hero__grid > p, .collections-hero__content > p, .contact-hero__content > p', 'fadeInRight'],
+    ['.section-heading, .journal-principles__heading', 'fadeInUp'],
+    ['.journal-principles-feature .principles-orbit, .journal-principles-feature__copy', 'fadeInRight'],
+    ['.feature-split > img, .journal-principle img, .collections-intro__grid > img, .contact-enquiry', 'fadeInLeft'],
+    ['.feature-split > div, .journal-principle div, .collections-intro__grid > div, .contact-copy', 'fadeInRight'],
+    ['.card, .service-image-card, .collection-card, .article-card, .audience-card, .clients-logo, .services-benefits__grid article', 'fadeInUp']
+  ];
+  sourceMappings.forEach(([selector, animation]) => document.querySelectorAll(selector).forEach((element) => element.setAttribute('data-reveal', animation)));
+  document.querySelectorAll('.home-testimonials blockquote').forEach((element) => element.setAttribute('data-reveal-delay', '200'));
+  const reveals = document.querySelectorAll('[data-reveal]');
+  const reveal = (element) => element.classList.add('is-revealed');
+  if (reduceMotion.matches || !('IntersectionObserver' in window)) {
+    reveals.forEach(reveal);
+  } else {
+    const observer = new IntersectionObserver((entries, currentObserver) => entries.forEach((entry) => {
+      if (entry.isIntersecting) { reveal(entry.target); currentObserver.unobserve(entry.target); }
+    }), { threshold: .08, rootMargin: '0px 0px -8%' });
+    reveals.forEach((element) => observer.observe(element));
+  }
+
+  document.querySelectorAll('[data-principles-orbit]').forEach((orbit) => {
+    const ring = orbit.querySelector('.principles-orbit__ring');
+    const chips = [...orbit.querySelectorAll('.principle-chip')];
+    const playInteractiveCircle = () => {
+      if (ring.classList.contains('is-animating') || reduceMotion.matches) return;
+      ring.classList.add('is-animating');
+      chips.forEach((item) => item.setAttribute('aria-pressed', 'true'));
+      window.setTimeout(() => {
+        ring.classList.remove('is-animating');
+        chips.forEach((item) => item.setAttribute('aria-pressed', 'false'));
+      }, 760);
+    };
+    chips.forEach((chip) => chip.addEventListener('click', playInteractiveCircle));
+    if (!reduceMotion.matches && 'IntersectionObserver' in window) {
+      const orbitObserver = new IntersectionObserver((entries, currentObserver) => entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          window.setTimeout(playInteractiveCircle, 450);
+          currentObserver.unobserve(entry.target);
+        }
+      }), { threshold: .35 });
+      orbitObserver.observe(orbit);
+    }
+  });
+</script>
+<style is:global>
+  [data-reveal] { animation-duration: 1s; animation-fill-mode: both; animation-timing-function: ease; opacity: 0; }
+  [data-reveal].is-revealed { opacity: 1; animation-name: reveal-fade-in; }
+  [data-reveal='fadeInUp'].is-revealed { animation-name: reveal-fade-in-up; }
+  [data-reveal='fadeInDown'].is-revealed { animation-name: reveal-fade-in-down; }
+  [data-reveal='fadeInLeft'].is-revealed { animation-name: reveal-fade-in-left; }
+  [data-reveal='fadeInRight'].is-revealed { animation-name: reveal-fade-in-right; }
+  [data-reveal='bounceIn'].is-revealed { animation-name: reveal-bounce-in; }
+  [data-reveal-delay='200'] { animation-delay: .2s; }
+  @media (prefers-reduced-motion: reduce) { [data-reveal] { opacity: 1; animation: none; } }
+  @keyframes reveal-fade-in { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes reveal-fade-in-up { from { opacity: 0; transform: translate3d(0, 100%, 0); } to { opacity: 1; transform: translate3d(0, 0, 0); } }
+  @keyframes reveal-fade-in-down { from { opacity: 0; transform: translate3d(0, -100%, 0); } to { opacity: 1; transform: translate3d(0, 0, 0); } }
+  @keyframes reveal-fade-in-left { from { opacity: 0; transform: translate3d(-100%, 0, 0); } to { opacity: 1; transform: translate3d(0, 0, 0); } }
+  @keyframes reveal-fade-in-right { from { opacity: 0; transform: translate3d(100%, 0, 0); } to { opacity: 1; transform: translate3d(0, 0, 0); } }
+  @keyframes reveal-bounce-in { from, 20%, 40%, 60%, 80%, to { animation-timing-function: cubic-bezier(.215, .61, .355, 1); } 0% { opacity: 0; transform: scale3d(.3, .3, .3); } 20% { transform: scale3d(1.1, 1.1, 1.1); } 40% { transform: scale3d(.9, .9, .9); } 60% { opacity: 1; transform: scale3d(1.03, 1.03, 1.03); } 80% { transform: scale3d(.97, .97, .97); } to { opacity: 1; transform: scale3d(1, 1, 1); } }
+</style>
