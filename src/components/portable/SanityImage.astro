@@ -1,0 +1,10 @@
+---
+const {value} = Astro.props
+const asset = value?.asset
+const width = asset?.metadata?.dimensions?.width ?? 1200
+const height = asset?.metadata?.dimensions?.height ?? 800
+---
+{asset?.url && <figure>
+  <img src={`${asset.url}?auto=format&fit=max&w=1600&q=85`} srcset={`${asset.url}?auto=format&fit=max&w=640&q=80 640w, ${asset.url}?auto=format&fit=max&w=1024&q=82 1024w, ${asset.url}?auto=format&fit=max&w=1600&q=85 1600w`} sizes="(max-width: 900px) 100vw, 820px" alt={value.alt ?? ''} width={width} height={height} loading="lazy" decoding="async" />
+  {value.caption && <figcaption>{value.caption}</figcaption>}
+</figure>}

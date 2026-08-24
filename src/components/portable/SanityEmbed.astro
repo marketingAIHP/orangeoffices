@@ -1,0 +1,9 @@
+---
+const {value} = Astro.props
+let safeUrl = ''
+try {
+  const url = new URL(value?.url)
+  if (['www.youtube.com', 'youtube.com', 'youtu.be', 'player.vimeo.com', 'vimeo.com'].includes(url.hostname)) safeUrl = url.href
+} catch {}
+---
+{safeUrl && <div class="media-embed"><iframe src={safeUrl} title={value?.title ?? 'Embedded media'} loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>}

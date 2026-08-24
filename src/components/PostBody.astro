@@ -1,0 +1,10 @@
+---
+import {PortableText} from 'astro-portabletext'
+import SanityCta from './portable/SanityCta.astro'
+import SanityEmbed from './portable/SanityEmbed.astro'
+import SanityImage from './portable/SanityImage.astro'
+import SanityTable from './portable/SanityTable.astro'
+const {value} = Astro.props
+const components = {type: {contentImage: SanityImage, table: SanityTable, embed: SanityEmbed, cta: SanityCta}}
+---
+<PortableText value={value} components={components} />

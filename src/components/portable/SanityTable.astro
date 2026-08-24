@@ -1,0 +1,5 @@
+---
+const {value} = Astro.props
+const rows = value?.rows ?? []
+---
+<div class="table-scroll"><table>{value?.caption && <caption>{value.caption}</caption>}<tbody>{rows.map((row: {cells?: string[]}) => <tr>{(row.cells ?? []).map((cell) => <td>{cell}</td>)}</tr>)}</tbody></table></div>

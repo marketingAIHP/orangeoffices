@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "engines": { "node": ">=24" },
+  "engines": {
+    "node": ">=24"
+  },
   "scripts": {
     "dev": "astro dev --force",
     "build": "astro build",
@@ -16,7 +18,12 @@
   },
   "dependencies": {
     "@astrojs/cloudflare": "14.1.6",
+    "@portabletext/types": "^4.0.2",
+    "@sanity/astro": "^3.5.0",
+    "@sanity/image-url": "^2.1.1",
     "astro": "7.1.5",
+    "astro-portabletext": "^0.13.0",
+    "groq": "^6.9.2",
     "zod": "4.4.3"
   },
   "devDependencies": {
