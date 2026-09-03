@@ -1,0 +1,564 @@
+---
+import { parseProjectDetail, type ProjectRecord } from '../lib/projects';
+
+interface Props {
+  project: ProjectRecord;
+  projects?: ProjectRecord[];
+}
+
+const { project, projects = [] } = Astro.props;
+const data = parseProjectDetail(project, projects);
+---
+
+<article class="project-case" data-project-slug={data.slug}>
+  {/* 1. HERO SECTION */}
+  <header class="project-hero">
+    <div class="container project-hero__container">
+      <div class="project-hero__meta-top">
+        <nav class="project-hero__breadcrumb" aria-label="Breadcrumb">
+          <a href="/">Home</a>
+          <span aria-hidden="true">/</span>
+          <a href="/collections/">Projects</a>
+          <span aria-hidden="true">/</span>
+          <span aria-current="page">{data.title}</span>
+        </nav>
+        <span class="project-hero__badge">Workplace Case Study</span>
+      </div>
+
+      <div class="project-hero__header">
+        <p class="project-hero__client-tag">{data.title}</p>
+        <h1 class="project-hero__title">{data.overview?.headline || data.title}</h1>
+
+        <div class="project-hero__pills">
+          {data.metadata.map((item) => (
+            <span class="project-hero__pill">
+              <strong class="project-hero__pill-label">{item.label}:</strong> {item.value}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      <div class="project-hero__frame">
+        <img
+          src={data.heroImage}
+          alt={`${data.title} Office Interior Design — Orange Offices`}
+          width="1920"
+          height="1080"
+          loading="eager"
+          decoding="async"
+          fetchpriority="high"
+          class="project-hero__image"
+        />
+        <div class="project-hero__image-caption">
+          <span>{data.title} Corporate Headquarters</span>
+          <span>{data.metadata.find(m => m.label === 'Location')?.value || 'Gurgaon'}</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  {/* 2. ARCHITECTURAL PROJECT SPECS BAR */}
+  <section class="project-specs" aria-label="Project Specifications">
+    <div class="container project-specs__container">
+      <div class="project-specs__lead">
+        <span class="eyebrow project-specs__eyebrow">Project Brief</span>
+        <h2 class="project-specs__heading">Key Project Metrics</h2>
+      </div>
+
+      <div class="project-specs__grid">
+        {data.metadata.map((item) => (
+          <div class="project-specs__item">
+            <span class="project-specs__label">{item.label}</span>
+            <span class="project-specs__value">{item.value}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {/* 3. THE PROJECT / EDITORIAL OVERVIEW */}
+  <section class="project-overview" aria-label="Project Overview">
+    <div class="container project-overview__container">
+      <div class="project-overview__layout">
+        <div class="project-overview__header-col">
+          <span class="eyebrow">The Project</span>
+          <h2 class="project-overview__title">Design Brief & Workplace Strategy</h2>
+        </div>
+
+        <div class="project-overview__body-col">
+          {data.overview?.paragraphs.map((para) => (
+            <p class="project-overview__lead">{para}</p>
+          ))}
+        </div>
+      </div>
+
+      {/* Optional Material / Custom Detail Vignettes */}
+      {data.overview?.detailImages && data.overview.detailImages.length > 0 && (
+        <div class="project-vignettes">
+          <div class="project-vignettes__header">
+            <span class="project-vignettes__tag">Custom Details & Materiality</span>
+            <p class="project-vignettes__sub">Curated bespoke finishes, collaborative textures and breakout furniture elements.</p>
+          </div>
+          <div class="project-vignettes__grid">
+            {data.overview.detailImages.map((img, idx) => (
+              <figure class="project-vignettes__item">
+                <img
+                  src={img.src}
+                  alt={`${data.title} custom architectural detail ${idx + 1}`}
+                  width="720"
+                  height="720"
+                  loading="lazy"
+                  decoding="async"
+                  class="project-vignettes__img"
+                />
+                <figcaption class="project-vignettes__caption">
+                  <span>Detail {String(idx + 1).padStart(2, '0')}</span>
+                  <span>Bespoke Fitout</span>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  </section>
+
+  {/* 4. DESIGN STORY CHAPTERS */}
+  {data.chapters.length > 0 && (
+    <section class="project-story" aria-label="Design Narrative">
+      <div class="container project-story__container">
+        {data.chapters.map((chapter, index) => {
+          const isEven = index % 2 === 0;
+          const hasMultipleImages = chapter.images.length > 1;
+
+          return (
+            <article class:list={['project-chapter', { 'project-chapter--alt': !isEven }]}>
+              <div class="project-chapter__content">
+                <div class="project-chapter__marker">
+                  <span class="project-chapter__num">{String(index + 1).padStart(2, '0')}</span>
+                  <span class="project-chapter__phase">Design Chapter</span>
+                </div>
+                <h2 class="project-chapter__title">{chapter.title}</h2>
+                <div class="project-chapter__prose">
+                  {chapter.paragraphs.map((p) => (
+                    <p>{p}</p>
+                  ))}
+                </div>
+              </div>
+
+              {chapter.images.length > 0 && (
+                <div class:list={['project-chapter__media', { 'project-chapter__media--duo': hasMultipleImages }]}>
+                  {chapter.images.map((img, imgIdx) => (
+                    <button
+                      type="button"
+                      class="project-chapter__figure-btn"
+                      data-lightbox-open
+                      data-img-src={img.src}
+                      data-img-alt={img.alt}
+                      aria-label={`Enlarge photo: ${img.alt}`}
+                    >
+                      <img
+                        src={img.src}
+                        alt={img.alt}
+                        width="1600"
+                        height="1067"
+                        loading="lazy"
+                        decoding="async"
+                        class="project-chapter__img"
+                      />
+                      <span class="project-chapter__zoom-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                          <circle cx="11" cy="11" r="8"></circle>
+                          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                          <line x1="11" y1="8" x2="11" y2="14"></line>
+                          <line x1="8" y1="11" x2="14" y2="11"></line>
+                        </svg>
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </article>
+          );
+        })}
+      </div>
+    </section>
+  )}
+
+  {/* 5. CLIENT TESTIMONIAL & VIDEO SPOTLIGHT */}
+  {data.testimonial && (
+    <section class="project-testimonial" aria-label="Client Endorsement">
+      <div class="container project-testimonial__container">
+        <div class="project-testimonial__card">
+          <div class="project-testimonial__quote-mark" aria-hidden="true">“</div>
+          <blockquote class="project-testimonial__quote">
+            <p>{data.testimonial.quote}</p>
+          </blockquote>
+
+          <div class="project-testimonial__footer">
+            <div class="project-testimonial__author-info">
+              <cite class="project-testimonial__author">{data.testimonial.author}</cite>
+              <span class="project-testimonial__role">{data.testimonial.role}</span>
+              {data.testimonial.company && (
+                <span class="project-testimonial__company">{data.testimonial.company}</span>
+              )}
+            </div>
+
+            {data.testimonial.youtubeId && (
+              <div class="project-testimonial__action">
+                <a
+                  href={`https://www.youtube.com/watch?v=${data.testimonial.youtubeId}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="button button--ghost project-testimonial__video-btn"
+                  data-video-modal-trigger={data.testimonial.youtubeId}
+                >
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
+                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                  </svg>
+                  <span>Watch Project Film</span>
+                </a>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </section>
+  )}
+
+  {/* 6. COMPLETE ARCHITECTURAL PHOTO GALLERY */}
+  {data.galleryImages.length > 0 && (
+    <section class="project-gallery" id="gallery" aria-label="Project Photo Gallery">
+      <div class="container project-gallery__container">
+        <div class="project-gallery__header">
+          <div>
+            <span class="eyebrow">Visual Tour</span>
+            <h2 class="project-gallery__heading">Completed Space Gallery</h2>
+          </div>
+          <span class="project-gallery__count">
+            {data.galleryImages.length} Photographs
+          </span>
+        </div>
+
+        <div class="project-gallery__grid">
+          {data.galleryImages.map((img, idx) => {
+            // Apply varied grid spans for architectural editorial rhythm
+            const isFeatured = idx === 0 || idx === 3 || idx === 6;
+            return (
+              <div class:list={['project-gallery__cell', { 'project-gallery__cell--wide': isFeatured }]}>
+                <button
+                  type="button"
+                  class="project-gallery__item-btn"
+                  data-lightbox-open
+                  data-gallery-index={idx}
+                  data-img-src={img.src}
+                  data-img-alt={img.alt}
+                  aria-label={`View photo ${idx + 1}: ${img.alt}`}
+                >
+                  <img
+                    src={img.src}
+                    alt={img.alt}
+                    width={isFeatured ? 1600 : 1000}
+                    height={isFeatured ? 1000 : 750}
+                    loading="lazy"
+                    decoding="async"
+                    class="project-gallery__img"
+                  />
+                  <div class="project-gallery__overlay">
+                    <span class="project-gallery__num">{String(idx + 1).padStart(2, '0')}</span>
+                    <span class="project-gallery__caption-text">{img.alt}</span>
+                    <span class="project-gallery__icon" aria-hidden="true">↗</span>
+                  </div>
+                </button>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  )}
+
+  {/* 7. PREVIOUS / NEXT PROJECT NAVIGATION */}
+  {(data.previousProject || data.nextProject) && (
+    <nav class="project-nav" aria-label="Project Navigation">
+      <div class="container project-nav__container">
+        {data.previousProject && (
+          <a href={data.previousProject.path} class="project-nav__link project-nav__link--prev">
+            <span class="project-nav__dir">← Previous Case Study</span>
+            <strong class="project-nav__name">{data.previousProject.title}</strong>
+          </a>
+        )}
+        {data.nextProject && (
+          <a href={data.nextProject.path} class="project-nav__link project-nav__link--next">
+            <span class="project-nav__dir">Next Case Study →</span>
+            <strong class="project-nav__name">{data.nextProject.title}</strong>
+          </a>
+        )}
+      </div>
+    </nav>
+  )}
+
+  {/* 8. HIGH-CONVERSION LEAD GENERATION SECTION */}
+  <section class="project-cta" aria-label="Start Your Project">
+    <div class="container project-cta__container">
+      <div class="project-cta__box">
+        <span class="eyebrow project-cta__eyebrow">Start Your Workplace Journey</span>
+        <h2 class="project-cta__heading">Ready to Create an Exceptional Office?</h2>
+        <p class="project-cta__desc">
+          From strategic workplace planning and 3D visualization to complete turnkey execution within 45 days. Let's design a high-performance office for your team in Delhi NCR.
+        </p>
+        <div class="project-cta__actions">
+          <a class="button project-cta__button" href="/contact/">
+            Discuss Your Office Project <span aria-hidden="true">↗</span>
+          </a>
+          <a class="button button--ghost project-cta__button-secondary" href="tel:+917861004918">
+            Call +91 78610 04918
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* 9. RELATED PROJECTS */}
+  {data.relatedProjects.length > 0 && (
+    <section class="project-related" aria-label="More Workplaces">
+      <div class="container project-related__container">
+        <div class="project-related__header">
+          <div>
+            <span class="eyebrow">Portfolio</span>
+            <h2 class="project-related__heading">Explore More Workplaces</h2>
+          </div>
+          <a href="/collections/" class="text-link project-related__view-all">
+            View All Projects <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+
+        <div class="project-related__grid">
+          {data.relatedProjects.map((item) => (
+            <article class="project-related__card">
+              <a href={item.path} class="project-related__card-link">
+                <div class="project-related__image-wrap">
+                  {item.image && (
+                    <img
+                      src={item.image}
+                      alt={`${item.title} office interior design`}
+                      width="800"
+                      height="530"
+                      loading="lazy"
+                      decoding="async"
+                      class="project-related__image"
+                    />
+                  )}
+                  <div class="project-related__badge">{item.location}</div>
+                </div>
+                <div class="project-related__info">
+                  <h3 class="project-related__title">{item.title}</h3>
+                  <div class="project-related__meta">
+                    <span>{item.location}</span>
+                    {item.capacity && <span>· {item.capacity}</span>}
+                  </div>
+                  <span class="text-link project-related__cta-link">
+                    View Case Study <span aria-hidden="true">↗</span>
+                  </span>
+                </div>
+              </a>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  {/* 10. LIGHTBOX MODAL */}
+  <dialog class="case-lightbox" id="case-lightbox" aria-label="Full-screen photo viewer">
+    <div class="case-lightbox__dialog-body">
+      <div class="case-lightbox__topbar">
+        <div class="case-lightbox__counter" id="case-lightbox-counter">01 / 01</div>
+        <p class="case-lightbox__title" id="case-lightbox-caption">{data.title} Workplace</p>
+        <button type="button" class="case-lightbox__close" id="case-lightbox-close" aria-label="Close photo viewer">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <div class="case-lightbox__stage">
+        <button type="button" class="case-lightbox__arrow case-lightbox__arrow--prev" id="case-lightbox-prev" aria-label="Previous photo">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+
+        <div class="case-lightbox__img-container">
+          <img src="" alt="" id="case-lightbox-img" class="case-lightbox__img" />
+        </div>
+
+        <button type="button" class="case-lightbox__arrow case-lightbox__arrow--next" id="case-lightbox-next" aria-label="Next photo">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
+      </div>
+
+      <div class="case-lightbox__bottombar">
+        <span class="case-lightbox__keyboard-hint">Use ← / → keys to navigate · Esc to close</span>
+      </div>
+    </div>
+  </dialog>
+
+  {/* 11. VIDEO MODAL (IF VIDEO EXISTS) */}
+  {data.testimonial?.youtubeId && (
+    <dialog class="case-video-modal" id="case-video-modal" aria-label="Project Video">
+      <div class="case-video-modal__inner">
+        <button type="button" class="case-video-modal__close" id="case-video-modal-close" aria-label="Close video">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+        <div class="case-video-modal__embed">
+          <iframe
+            id="case-video-iframe"
+            data-src={`https://www.youtube-nocookie.com/embed/${data.testimonial.youtubeId}?autoplay=1&rel=0`}
+            src=""
+            title={`${data.title} Project Film`}
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+          ></iframe>
+        </div>
+      </div>
+    </dialog>
+  )}
+</article>
+
+<script is:inline define:vars={{ galleryImages: data.galleryImages }}>
+  // Lightbox Controller
+  (function initLightbox() {
+    const dialog = document.getElementById('case-lightbox');
+    const imgEl = document.getElementById('case-lightbox-img');
+    const captionEl = document.getElementById('case-lightbox-caption');
+    const counterEl = document.getElementById('case-lightbox-counter');
+    const closeBtn = document.getElementById('case-lightbox-close');
+    const prevBtn = document.getElementById('case-lightbox-prev');
+    const nextBtn = document.getElementById('case-lightbox-next');
+
+    if (!dialog || !imgEl) return;
+
+    const images = galleryImages && galleryImages.length > 0 ? galleryImages : [];
+    let currentIndex = 0;
+
+    function renderImage(idx) {
+      if (images.length === 0) return;
+      currentIndex = (idx + images.length) % images.length;
+      const current = images[currentIndex];
+      imgEl.src = current.src;
+      imgEl.alt = current.alt || '';
+      if (captionEl) captionEl.textContent = current.alt || '';
+      if (counterEl) counterEl.textContent = `${String(currentIndex + 1).padStart(2, '0')} / ${String(images.length).padStart(2, '0')}`;
+    }
+
+    function openLightbox(idx) {
+      renderImage(idx);
+      dialog.showModal();
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      dialog.close();
+      document.body.style.overflow = '';
+      if (imgEl) imgEl.src = '';
+    }
+
+    // Attach trigger listeners
+    document.querySelectorAll('[data-lightbox-open]').forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        const galleryIdx = btn.getAttribute('data-gallery-index');
+        const imgSrc = btn.getAttribute('data-img-src');
+        if (galleryIdx !== null && galleryIdx !== undefined) {
+          openLightbox(parseInt(galleryIdx, 10));
+        } else if (imgSrc) {
+          const found = images.findIndex((item) => item.src === imgSrc);
+          if (found >= 0) {
+            openLightbox(found);
+          } else {
+            // single custom image
+            imgEl.src = imgSrc;
+            imgEl.alt = btn.getAttribute('data-img-alt') || '';
+            if (captionEl) captionEl.textContent = imgEl.alt;
+            if (counterEl) counterEl.textContent = '01 / 01';
+            dialog.showModal();
+            document.body.style.overflow = 'hidden';
+          }
+        }
+      });
+    });
+
+    closeBtn?.addEventListener('click', closeLightbox);
+    prevBtn?.addEventListener('click', () => renderImage(currentIndex - 1));
+    nextBtn?.addEventListener('click', () => renderImage(currentIndex + 1));
+
+    dialog.addEventListener('click', (e) => {
+      if (e.target === dialog) closeLightbox();
+    });
+
+    dialog.addEventListener('cancel', () => {
+      document.body.style.overflow = '';
+    });
+
+    window.addEventListener('keydown', (e) => {
+      if (!dialog.open) return;
+      if (e.key === 'ArrowLeft') renderImage(currentIndex - 1);
+      if (e.key === 'ArrowRight') renderImage(currentIndex + 1);
+      if (e.key === 'Escape') closeLightbox();
+    });
+
+    // Touch swipe support for mobile
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    dialog.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    dialog.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      if (touchStartX - touchEndX > 50) renderImage(currentIndex + 1);
+      if (touchEndX - touchStartX > 50) renderImage(currentIndex - 1);
+    }, { passive: true });
+  })();
+
+  // Video Modal Controller
+  (function initVideoModal() {
+    const trigger = document.querySelector('[data-video-modal-trigger]');
+    const dialog = document.getElementById('case-video-modal');
+    const iframe = document.getElementById('case-video-iframe');
+    const closeBtn = document.getElementById('case-video-modal-close');
+
+    if (!trigger || !dialog || !iframe) return;
+
+    trigger.addEventListener('click', (e) => {
+      e.preventDefault();
+      const src = iframe.getAttribute('data-src');
+      if (src) iframe.src = src;
+      dialog.showModal();
+      document.body.style.overflow = 'hidden';
+    });
+
+    function closeVideo() {
+      dialog.close();
+      iframe.src = '';
+      document.body.style.overflow = '';
+    }
+
+    closeBtn?.addEventListener('click', closeVideo);
+    dialog.addEventListener('click', (e) => {
+      if (e.target === dialog) closeVideo();
+    });
+    dialog.addEventListener('cancel', () => {
+      iframe.src = '';
+      document.body.style.overflow = '';
+    });
+  })();
+</script>

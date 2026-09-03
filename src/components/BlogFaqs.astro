@@ -1,0 +1,18 @@
+---
+interface FaqItem { question: string; answer: string }
+const {items = []} = Astro.props as {items?: FaqItem[]}
+---
+{items.length > 0 && <section class="article-faqs" aria-label="Frequently asked questions">
+  <h2>FAQs</h2>
+  {items.map((item, index) => <details class="article-faqs__item" open={index === 0}>
+    <summary><span class="article-faqs__question" set:html={item.question} /><span class="article-faqs__icon" aria-hidden="true"><svg class="article-faqs__icon--plus" viewBox="0 0 448 512"><path d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z" /></svg><svg class="article-faqs__icon--minus" viewBox="0 0 448 512"><path d="M416 208H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h384c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z" /></svg></span></summary>
+    <div class="article-faqs__answer" set:html={item.answer} />
+  </details>)}
+</section>}
+<script>
+  document.querySelectorAll<HTMLElement>('.article-faqs').forEach((faq) => faq.addEventListener('toggle', (event) => {
+    const opened = event.target;
+    if (!(opened instanceof HTMLDetailsElement) || !opened.open) return;
+    faq.querySelectorAll('details[open]').forEach((item) => { if (item !== opened) item.open = false; });
+  }, true));
+</script>

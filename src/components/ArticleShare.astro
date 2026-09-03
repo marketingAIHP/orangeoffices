@@ -1,0 +1,15 @@
+---
+const {title, path} = Astro.props as {title: string; path: string}
+const pageUrl = `https://orangeoffices.in${path}`
+const encodedUrl = encodeURIComponent(pageUrl)
+const encodedTitle = encodeURIComponent(title)
+const shares = [
+  ['Facebook', 'f', `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`, 'article-share__item--facebook'],
+  ['Pinterest', 'p', `https://pinterest.com/pin/create/button/?url=${encodedUrl}&description=${encodedTitle}`, 'article-share__item--pinterest'],
+  ['Twitter', '♥', `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`, 'article-share__item--twitter'],
+  ['LinkedIn', 'in', `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`, 'article-share__item--linkedin'],
+]
+---
+<nav class="article-share" aria-label="Share this article">
+  {shares.map(([label, icon, href, className]) => <a class:list={['article-share__item', className]} href={href} target="_blank" rel="noreferrer"><span aria-hidden="true">{icon}</span>{label}</a>)}
+</nav>

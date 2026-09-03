@@ -7,9 +7,12 @@ import ServicesPage from '../components/ServicesPage.astro';
 import JournalPage from '../components/JournalPage.astro';
 import CollectionsPage from '../components/CollectionsPage.astro';
 import ContactPage from '../components/ContactPage.astro';
+import ProjectPage from '../components/ProjectPage.astro';
 import { pages, services } from '../lib/site';
 import wordpressRecords from '../data/wordpress-content.json';
 import PostBody from '../components/PostBody.astro';
+import BlogFaqs from '../components/BlogFaqs.astro';
+import ArticleShare from '../components/ArticleShare.astro';
 import AnimationRuntime from '../components/AnimationRuntime.astro';
 import { getAllPosts } from '../lib/sanity/posts';
 import type { SanityPost } from '../lib/sanity/types';
@@ -19,8 +22,7 @@ export async function getStaticPaths() {
   const sanityPosts = await getAllPosts() as SanityPost[];
   const postCount = sanityPosts.length;
   const journalPages = Array.from({ length: Math.ceil(Math.max(0, postCount - 6) / 10) }, (_, index) => `/journal/page/${index + 2}/`);
-  const nonPostRecords = wordpressRecords.filter((record) => record.type !== 'post');
-  const paths = [...Object.keys(pages), ...journalPages, ...services.map(([, href]) => href), ...nonPostRecords.map((record) => record.path), ...sanityPosts.map((post) => `/${post.slug}/`)];
+  const paths = [...Object.keys(pages), ...journalPages, ...services.map(([, href]) => href), ...wordpressRecords.map((record) => record.path), ...sanityPosts.map((post) => `/${post.slug}/`)];
   return [...new Set(paths)].map((path) => ({ params: { slug: path.slice(1, -1) }, props: { sanityPosts } }));
 }
 
@@ -30,11 +32,18 @@ const journalPageMatch = path.match(/^\/journal\/page\/(\d+)\/$/);
 const journalPageNumber = journalPageMatch ? Number(journalPageMatch[1]) : path === '/journal/' ? 1 : 0;
 const blogPageNumber = journalPageNumber;
 const page = pages[path] || (journalPageNumber ? pages['/journal/'] : undefined);
-const record = wordpressRecords.find((item) => item.type !== 'post' && item.path === path);
+const record = wordpressRecords.find((item) => item.path === path);
 const sanityPost = sanityPosts.find((item) => `/${item.slug}/` === path);
 if (!page && !record && !sanityPost) return Astro.redirect('/404/');
 const service = services.find(([, href]) => href === path);
 const articles = [...sanityPosts].sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
+const relatedArticles = sanityPost
+  ? articles.filter((article) => article._id !== sanityPost._id).sort((a, b) => {
+      const aSharedCategories = a.categories?.filter((category) => sanityPost.categories?.some((current) => current._id === category._id)).length ?? 0;
+      const bSharedCategories = b.categories?.filter((category) => sanityPost.categories?.some((current) => current._id === category._id)).length ?? 0;
+      return bSharedCategories - aSharedCategories || b.publishedAt.localeCompare(a.publishedAt);
+    }).slice(0, 3)
+  : [];
 const totalJournalPages = 1 + Math.ceil(Math.max(0, articles.length - 6) / 10);
 const visibleArticles = journalPageNumber === 1 ? articles.slice(0, 6) : journalPageNumber > 1 ? articles.slice(6 + (journalPageNumber - 2) * 10, 6 + (journalPageNumber - 1) * 10) : [];
 const projects = wordpressRecords.filter((item) => item.type === 'portfolio');
@@ -43,26 +52,90 @@ const description = sanityPost?.seo?.description || sanityPost?.excerpt || recor
 const eyebrow = service ? 'Services' : sanityPost ? 'Journal' : record?.type === 'portfolio' ? 'Selected project' : path === '/about/' ? 'Orange Offices' : record ? 'Orange Offices' : page!.eyebrow;
 const title = sanityPost?.seo?.title || (sanityPost ? `${sanityPost.title} | Orange Offices` : record?.seoTitle || (service ? `${service[0]} | Orange Offices` : journalPageNumber > 1 ? `Journal — Page ${journalPageNumber} | Orange Offices` : page!.title));
 const clientLogos = path === '/clients/' && record?.contentHtml ? [...record.contentHtml.matchAll(/<img[^>]+src="([^"]+)"[^>]*>/g)].map((match) => match[1]).slice(5) : [];
+const headquartersAddress = 'AIHP Tower, 249 G, Udyog Vihar Phase 4, Gurgaon 122015';
+const contentHtml = record?.contentHtml
+  ?.replaceAll('https://test123.aihp.in/wp-content/uploads/2026/07/Hybrid_Office_Workspace_Sizing_Formula.jpg', '/wp-content/uploads/2026/07/Hybrid_Office_Workspace_Sizing_Formula.jpg')
+  ?.replaceAll('Plot No: 448 - 451, Udyog Vihar Phase V Rd, Gurugram, Haryana 122016', headquartersAddress)
+  .replaceAll('AIHP Milestone<br />Plot No: 448 - 451, Rao Gajraj Singh Marg, Phase V,<br />Udyog Vihar, Sector 19, Gurugram, Haryana 122016', headquartersAddress);
+const formattedContentHtml = contentHtml?.replace(/^(\s*<b>TL;DR[\s\S]*?)(?=<p>)/i, '<div class="article-summary">$1</div>');
+const faqHeadingPattern = /<h2[^>]*>\s*(?:<[^>]+>\s*)*FAQs?[^<]*(?:<\/[^>]+>\s*)*<\/h2>/i;
+const faqHeadingMatch = formattedContentHtml?.match(faqHeadingPattern);
+const articleHtml = faqHeadingMatch?.index !== undefined ? formattedContentHtml!.slice(0, faqHeadingMatch.index) : formattedContentHtml;
+const faqItems = faqHeadingMatch && formattedContentHtml
+  ? [...formattedContentHtml.slice(faqHeadingMatch.index + faqHeadingMatch[0].length).matchAll(/<h3[^>]*>([\s\S]*?)<\/h3>\s*<p>([\s\S]*?)<\/p>/gi)].map((match) => ({ question: match[1], answer: match[2] }))
+  : [];
+const isPortfolioProject = record?.type === 'portfolio';
+const isArticle = record?.type === 'post' || Boolean(sanityPost);
 ---
 <BaseLayout title={title} description={description} noindex={path === '/thank-you/' || sanityPost?.seo?.noIndex} canonical={sanityPost?.seo?.canonicalUrl} article={sanityPost}>
-  {path !== '/about/' && path !== '/clients/' && path !== '/collections/' && path !== '/contact/' && !journalPageNumber && <PageHero eyebrow={eyebrow} title={heading} description={description} image={sanityPost?.featuredImage?.asset?.url || record?.image} meta={sanityPost ? `Published ${sanityPost.publishedAt.slice(0, 10)}` : undefined} />}
+  {path !== '/about/' && path !== '/clients/' && path !== '/collections/' && path !== '/contact/' && !journalPageNumber && !isPortfolioProject && <PageHero eyebrow={eyebrow} title={heading} description={description} image={sanityPost?.featuredImage?.asset?.url || record?.image} meta={sanityPost ? `Published ${sanityPost.publishedAt.slice(0, 10)}` : undefined} article={isArticle} />}
   {path === '/about/' && <AboutPage />}
   {path === '/clients/' && <ClientsPage logos={clientLogos} />}
   {path === '/services/' && <ServicesPage />}
   {journalPageNumber === 1 && <JournalPage />}
   {path === '/collections/' && <CollectionsPage projects={projects} />}
   {path === '/contact/' && <ContactPage />}
+  {isPortfolioProject && record && <ProjectPage project={record} projects={projects} />}
 
 
   {path !== '/contact/' && path !== '/about/' && path !== '/clients/' && path !== '/services/' && (
     <>
-      {record?.contentHtml && path !== '/journal/' && path !== '/collections/' && <section class="section content-section"><div class="container content-layout"><aside class="content-rail"><p class="eyebrow">Orange Offices</p><p>Thoughtful workplace design, planned around your people and business.</p><a class="text-link" href="/contact/">Discuss your project <span aria-hidden="true">↗</span></a></aside><article class="prose" set:html={record.contentHtml} /></div></section>}
-      {sanityPost?.body && <section class="section content-section"><div class="container content-layout"><aside class="content-rail"><p class="eyebrow">Orange Offices</p><p>Thoughtful workplace design, planned around your people and business.</p><a class="text-link" href="/contact/">Discuss your project <span aria-hidden="true">↗</span></a></aside><article class="prose"><PostBody value={sanityPost.body} /></article></div></section>}
+      {articleHtml && !isPortfolioProject && path !== '/journal/' && path !== '/collections/' && <section class:list={['section', 'content-section', { 'article-content': isArticle }]}><div class="container content-layout">{!isArticle && <aside class="content-rail"><p class="eyebrow">Orange Offices</p><p>Thoughtful workplace design, planned around your people and business.</p><a class="text-link" href="/contact/">Discuss your project <span aria-hidden="true">↗</span></a></aside>}<article class="prose" set:html={articleHtml} /><BlogFaqs items={faqItems} /></div></section>}
+      {sanityPost?.body && !contentHtml && <section class:list={['section', 'content-section', { 'article-content': isArticle }]}><div class="container content-layout">{!isArticle && <aside class="content-rail"><p class="eyebrow">Orange Offices</p><p>Thoughtful workplace design, planned around your people and business.</p><a class="text-link" href="/contact/">Discuss your project <span aria-hidden="true">↗</span></a></aside>}<article class="prose"><PostBody value={sanityPost.body} /></article></div></section>}
+      {isArticle && <section class="article-extras"><div class="container"><ArticleShare title={heading} path={path} />{relatedArticles.length > 0 && <section class="related-articles" aria-labelledby="related-articles-heading"><p class="eyebrow">Continue reading</p><h2 id="related-articles-heading">Related articles</h2><div class="grid grid--3 article-grid">{relatedArticles.map((article) => <article class="card article-card">{article.featuredImage?.asset?.url && <img src={`${article.featuredImage.asset.url}?auto=format&fit=crop&w=800&h=520&q=82`} alt={article.featuredImage.alt ?? ''} width="800" height="520" loading="lazy" />}<div><p class="article-meta">{new Date(article.publishedAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</p><h3><a href={`/${article.slug}/`}>{article.title}</a></h3><p>{article.excerpt || article.seo?.description}</p><a class="text-link" href={`/${article.slug}/`}>Read article <span aria-hidden="true">↗</span></a></div></article>)}</div></section>}</div></section>}
       {path === '/about/' && <section class="section section--dark"><div class="container feature-split"><div><p class="eyebrow">Our approach</p><h2>Spaces that work as hard as your people.</h2><p>We unite strategic planning, detailed design and reliable execution to deliver office environments with a strong sense of place.</p><a class="button button--ghost" href="/contact/">Start a conversation</a></div>{record?.image && <img src={record.image} alt="Orange Offices workspace" width="1200" height="800" loading="lazy" />}</div></section>}
       {journalPageNumber > 0 && <section class="section journal-archive"><div class="container"><div class="section-heading"><div><p class="eyebrow">All articles · {articles.length}</p><h2>{journalPageNumber === 1 ? 'Latest from the journal' : 'More from the journal'}</h2></div></div><div class="grid grid--3 article-grid">{visibleArticles.map((article) => <article class="card article-card">{article.featuredImage?.asset?.url && <img src={`${article.featuredImage.asset.url}?auto=format&fit=crop&w=800&h=520&q=82`} alt={article.featuredImage.alt ?? ''} width="800" height="520" loading="lazy" />}<div><p class="article-meta">{new Date(article.publishedAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</p><h3><a href={`/${article.slug}/`}>{article.title}</a></h3><p>{article.excerpt || article.seo?.description}</p><a class="text-link" href={`/${article.slug}/`}>Read article <span aria-hidden="true">↗</span></a></div></article>)}</div>{totalJournalPages > 1 && <nav class="pagination" aria-label="Journal pages">{journalPageNumber > 1 && <a href={journalPageNumber === 2 ? '/journal/' : `/journal/page/${journalPageNumber - 1}/`}>← Previous</a>}<span>Page {journalPageNumber} of {totalJournalPages}</span>{journalPageNumber < totalJournalPages && <a href={`/journal/page/${journalPageNumber + 1}/`}>Next →</a>}</nav>}</div></section>}
       {!record && !blogPageNumber && <section class="section service-overview"><div class="container"><div class="section-heading"><div><p class="eyebrow">Our approach</p><h2>{service ? 'A considered approach from brief to delivery.' : 'Let’s create a better workplace.'}</h2></div></div><div class="grid grid--3">{[['Discover', 'We understand your workplace, people and practical requirements.'], ['Design', 'Our team creates a purposeful design with material and cost clarity.'], ['Deliver', 'We coordinate every detail through a considered, reliable handover.']].map(([step, copy], index) => <article class="card"><span class="card__number">0{index + 1}</span><h3>{step}</h3><p>{copy}</p></article>)}</div></div></section>}
-      {path !== '/journal/' && !blogPageNumber && path !== '/collections/' && <section class="section page-cta"><div class="container"><p class="eyebrow">Start your project</p><h2>Ready to create a workplace that works beautifully?</h2><p>Speak with our team about your next office space in Delhi NCR.</p><a class="button" href="/contact/">Get in touch <span aria-hidden="true">↗</span></a></div></section>}
+      {path !== '/journal/' && !blogPageNumber && path !== '/collections/' && !isPortfolioProject && <section class="section page-cta"><div class="container"><p class="eyebrow">Start your project</p><h2>Ready to create a workplace that works beautifully?</h2><p>Speak with our team about your next office space in Delhi NCR.</p><a class="button" href="/contact/">Get in touch <span aria-hidden="true">↗</span></a></div></section>}
     </>
   )}
   <AnimationRuntime />
 </BaseLayout>
+
+<script is:inline>
+  document.querySelectorAll('.article-content .prose h2').forEach((heading) => {
+    if (!/^faqs?\s*$/i.test(heading.textContent?.trim() || '')) return;
+
+    const faqSection = document.createElement('section');
+    faqSection.className = 'article-faqs';
+    faqSection.setAttribute('aria-label', 'Frequently asked questions');
+    heading.replaceWith(faqSection);
+    faqSection.append(heading);
+
+    let current = faqSection.nextElementSibling;
+    while (current && !/^H2$/i.test(current.tagName)) {
+      const next = current.nextElementSibling;
+      if (/^H3$/i.test(current.tagName)) {
+        const item = document.createElement('details');
+        item.className = 'article-faqs__item';
+        const question = document.createElement('summary');
+        question.innerHTML = `<span class="article-faqs__question">${current.innerHTML}</span><span class="article-faqs__icon" aria-hidden="true"><svg class="article-faqs__icon--plus" viewBox="0 0 448 512"><path d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path></svg><svg class="article-faqs__icon--minus" viewBox="0 0 448 512"><path d="M416 208H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h384c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path></svg></span>`;
+        item.append(question);
+        current.remove();
+
+        const answer = document.createElement('div');
+        answer.className = 'article-faqs__answer';
+        let answerNode = next;
+        while (answerNode?.tagName === 'P') {
+          const following = answerNode.nextElementSibling;
+          answer.append(answerNode);
+          answerNode = following;
+        }
+        item.append(answer);
+        faqSection.append(item);
+        if (faqSection.querySelectorAll('details').length === 1) item.open = true;
+        current = answerNode;
+        continue;
+      }
+      current = next;
+    }
+
+    faqSection.addEventListener('toggle', (event) => {
+      const openedItem = event.target;
+      if (!(openedItem instanceof HTMLDetailsElement) || !openedItem.open) return;
+      faqSection.querySelectorAll('details[open]').forEach((item) => {
+        if (item !== openedItem) item.open = false;
+      });
+    }, true);
+  });
+</script>

@@ -1,8 +1,8 @@
 ---
-interface Props { eyebrow: string; title: string; description?: string; image?: string | null; meta?: string; }
-const { eyebrow, title, description, image, meta } = Astro.props;
+interface Props { eyebrow: string; title: string; description?: string; image?: string | null; meta?: string; article?: boolean; }
+const { eyebrow, title, description, image, meta, article = false } = Astro.props;
 ---
-<section class:list={['page-hero', { 'page-hero--image': image }]} style={image ? `--hero-image: url('${image}')` : undefined}>
+<section class:list={['page-hero', { 'page-hero--image': image, 'page-hero--article': article }]} style={image ? `--hero-image: url('${image}')` : undefined}>
   <div class="container page-hero__grid">
     <div class="page-hero__content">
       <p class="eyebrow">{eyebrow}</p>
