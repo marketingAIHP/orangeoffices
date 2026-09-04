@@ -1,18 +1,57 @@
 ---
 interface FaqItem { question: string; answer: string }
 const {items = []} = Astro.props as {items?: FaqItem[]}
+const number = (index: number) => String(index + 1).padStart(2, '0')
 ---
-{items.length > 0 && <section class="article-faqs" aria-label="Frequently asked questions">
-  <h2>FAQs</h2>
-  {items.map((item, index) => <details class="article-faqs__item" open={index === 0}>
-    <summary><span class="article-faqs__question" set:html={item.question} /><span class="article-faqs__icon" aria-hidden="true"><svg class="article-faqs__icon--plus" viewBox="0 0 448 512"><path d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z" /></svg><svg class="article-faqs__icon--minus" viewBox="0 0 448 512"><path d="M416 208H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h384c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z" /></svg></span></summary>
-    <div class="article-faqs__answer" set:html={item.answer} />
-  </details>)}
-</section>}
+{items.length > 0 && (
+  <section class="blog-faq-section" aria-label="Frequently asked questions">
+    <div class="container">
+      <div class="blog-faq">
+        <div class="blog-faq__content">
+          <div class="blog-faq__intro">
+            <p class="eyebrow">Frequently asked</p>
+            <h2>The answers<br />before you ask.</h2>
+            <p>The questions our team hears most. If you need anything else, we’re here to help.</p>
+          </div>
+          <div class="blog-faq__list">
+            {items.map((item, index) => (
+              <details class="blog-faq__item" open={index === 0}>
+                <summary>
+                  <span class="blog-faq__number">{number(index)}</span>
+                  <span class="blog-faq__question" set:html={item.question} />
+                  <span class="blog-faq__toggle" aria-hidden="true">{index === 0 ? '−' : '+'}</span>
+                </summary>
+                <div class="blog-faq__answer" set:html={item.answer} />
+              </details>
+            ))}
+          </div>
+        </div>
+        <aside class="blog-faq__cta">
+          <p class="eyebrow">Plan your workspace</p>
+          <h2>Ready to create a better office?</h2>
+          <p>Talk to our design team about a workplace shaped around your people and business.</p>
+          <a class="button" href="/contact/">Discuss your project <span aria-hidden="true">↗</span></a>
+        </aside>
+      </div>
+    </div>
+  </section>
+)}
 <script>
-  document.querySelectorAll<HTMLElement>('.article-faqs').forEach((faq) => faq.addEventListener('toggle', (event) => {
-    const opened = event.target;
-    if (!(opened instanceof HTMLDetailsElement) || !opened.open) return;
-    faq.querySelectorAll('details[open]').forEach((item) => { if (item !== opened) item.open = false; });
-  }, true));
+  document.querySelectorAll<HTMLElement>('.blog-faq').forEach((faq) => {
+    faq.addEventListener('toggle', (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLDetailsElement)) return;
+      const toggle = target.querySelector('.blog-faq__toggle');
+      if (toggle) toggle.textContent = target.open ? '−' : '+';
+      if (target.open) {
+        faq.querySelectorAll('details[open]').forEach((item) => {
+          if (item !== target) {
+            item.open = false;
+            const otherToggle = item.querySelector('.blog-faq__toggle');
+            if (otherToggle) otherToggle.textContent = '+';
+          }
+        });
+      }
+    }, true);
+  });
 </script>

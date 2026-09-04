@@ -5,6 +5,7 @@ const postProjection = `{
   readingTime, featured,
   featuredImage{alt, caption, asset->{_id, url, metadata{dimensions, lqip}}},
   author->{_id, name, "slug": slug.current, designation, image{alt, asset->{url}}},
+  faqs[]{question, answer},
   categories[]->{_id, title, "slug": slug.current},
   seo{title, description, canonicalUrl, noIndex, ogTitle, ogDescription,
     ogImage{alt, asset->{url}}},

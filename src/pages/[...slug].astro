@@ -13,6 +13,8 @@ import wordpressRecords from '../data/wordpress-content.json';
 import PostBody from '../components/PostBody.astro';
 import BlogFaqs from '../components/BlogFaqs.astro';
 import ArticleShare from '../components/ArticleShare.astro';
+import ArticleHero from '../components/ArticleHero.astro';
+import ArticleToc from '../components/ArticleToc.astro';
 import AnimationRuntime from '../components/AnimationRuntime.astro';
 import { getAllPosts } from '../lib/sanity/posts';
 import type { SanityPost } from '../lib/sanity/types';
@@ -64,11 +66,32 @@ const articleHtml = faqHeadingMatch?.index !== undefined ? formattedContentHtml!
 const faqItems = faqHeadingMatch && formattedContentHtml
   ? [...formattedContentHtml.slice(faqHeadingMatch.index + faqHeadingMatch[0].length).matchAll(/<h3[^>]*>([\s\S]*?)<\/h3>\s*<p>([\s\S]*?)<\/p>/gi)].map((match) => ({ question: match[1], answer: match[2] }))
   : [];
+const sanityFaqItems = sanityPost?.faqs?.filter((item) => item.question && item.answer).map((item) => ({ question: item.question!, answer: item.answer! })) || [];
 const isPortfolioProject = record?.type === 'portfolio';
 const isArticle = record?.type === 'post' || Boolean(sanityPost);
+const articlePublishedAt = sanityPost?.publishedAt || record?.publishedAt;
+const rawArticleModifiedAt = sanityPost?.modifiedAt || record?.modifiedAt;
+const articleModifiedAt = rawArticleModifiedAt && articlePublishedAt && new Date(rawArticleModifiedAt).getTime() >= new Date(articlePublishedAt).getTime() ? rawArticleModifiedAt : undefined;
+const articleImage = sanityPost?.featuredImage?.asset?.url || record?.image;
+const articleImageAlt = sanityPost?.featuredImage?.alt || heading;
+const articleCategory = sanityPost?.categories?.[0]?.title || 'Journal';
+const wordCount = (articleHtml || JSON.stringify(sanityPost?.body || '')).replace(/<[^>]+>/g, ' ').trim().split(/\s+/).filter(Boolean).length;
+const articleReadingTime = Math.max(1, Math.ceil(wordCount / 220));
+const tocSource = articleHtml || '';
+const tocHeadings = [...tocSource.matchAll(/<h([23])[^>]*>([\s\S]*?)<\/h\1>/gi)]
+  .map((match, index) => ({ level: Number(match[1]) as 2 | 3, text: match[2].replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ').trim(), id: `article-section-${index + 1}` }))
+  .filter((heading) => heading.text && !/^faqs?$/i.test(heading.text));
+let tocIndex = 0;
+const articleHtmlWithIds = articleHtml?.replace(/<h([23])([^>]*)>([\s\S]*?)<\/h\1>/gi, (full, level, attributes, value) => {
+  const text = value.replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ').trim();
+  if (/^faqs?$/i.test(text)) return full;
+  const id = tocHeadings[tocIndex++]?.id;
+  return id ? `<h${level}${attributes} id="${id}">${value}</h${level}>` : full;
+});
 ---
-<BaseLayout title={title} description={description} noindex={path === '/thank-you/' || sanityPost?.seo?.noIndex} canonical={sanityPost?.seo?.canonicalUrl} article={sanityPost}>
-  {path !== '/about/' && path !== '/clients/' && path !== '/collections/' && path !== '/contact/' && !journalPageNumber && !isPortfolioProject && <PageHero eyebrow={eyebrow} title={heading} description={description} image={sanityPost?.featuredImage?.asset?.url || record?.image} meta={sanityPost ? `Published ${sanityPost.publishedAt.slice(0, 10)}` : undefined} article={isArticle} />}
+<BaseLayout title={title} description={description} noindex={path === '/thank-you/' || sanityPost?.seo?.noIndex} canonical={sanityPost?.seo?.canonicalUrl} article={sanityPost} articleMeta={isArticle ? { headline: heading, description, publishedAt: articlePublishedAt, modifiedAt: articleModifiedAt, image: articleImage, author: sanityPost?.author?.name } : undefined}>
+  {isArticle && <ArticleHero title={heading} description={description} image={articleImage} imageAlt={articleImageAlt} path={path} category={articleCategory} publishedAt={articlePublishedAt} modifiedAt={articleModifiedAt} readingTime={articleReadingTime} author={sanityPost?.author} />}
+  {path !== '/about/' && path !== '/clients/' && path !== '/collections/' && path !== '/contact/' && !journalPageNumber && !isPortfolioProject && !isArticle && <PageHero eyebrow={eyebrow} title={heading} description={description} image={sanityPost?.featuredImage?.asset?.url || record?.image} meta={sanityPost ? `Published ${sanityPost.publishedAt.slice(0, 10)}` : undefined} article={isArticle} />}
   {path === '/about/' && <AboutPage />}
   {path === '/clients/' && <ClientsPage logos={clientLogos} />}
   {path === '/services/' && <ServicesPage />}
@@ -80,9 +103,54 @@ const isArticle = record?.type === 'post' || Boolean(sanityPost);
 
   {path !== '/contact/' && path !== '/about/' && path !== '/clients/' && path !== '/services/' && (
     <>
-      {articleHtml && !isPortfolioProject && path !== '/journal/' && path !== '/collections/' && <section class:list={['section', 'content-section', { 'article-content': isArticle }]}><div class="container content-layout">{!isArticle && <aside class="content-rail"><p class="eyebrow">Orange Offices</p><p>Thoughtful workplace design, planned around your people and business.</p><a class="text-link" href="/contact/">Discuss your project <span aria-hidden="true">↗</span></a></aside>}<article class="prose" set:html={articleHtml} /><BlogFaqs items={faqItems} /></div></section>}
-      {sanityPost?.body && !contentHtml && <section class:list={['section', 'content-section', { 'article-content': isArticle }]}><div class="container content-layout">{!isArticle && <aside class="content-rail"><p class="eyebrow">Orange Offices</p><p>Thoughtful workplace design, planned around your people and business.</p><a class="text-link" href="/contact/">Discuss your project <span aria-hidden="true">↗</span></a></aside>}<article class="prose"><PostBody value={sanityPost.body} /></article></div></section>}
-      {isArticle && <section class="article-extras"><div class="container"><ArticleShare title={heading} path={path} />{relatedArticles.length > 0 && <section class="related-articles" aria-labelledby="related-articles-heading"><p class="eyebrow">Continue reading</p><h2 id="related-articles-heading">Related articles</h2><div class="grid grid--3 article-grid">{relatedArticles.map((article) => <article class="card article-card">{article.featuredImage?.asset?.url && <img src={`${article.featuredImage.asset.url}?auto=format&fit=crop&w=800&h=520&q=82`} alt={article.featuredImage.alt ?? ''} width="800" height="520" loading="lazy" />}<div><p class="article-meta">{new Date(article.publishedAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</p><h3><a href={`/${article.slug}/`}>{article.title}</a></h3><p>{article.excerpt || article.seo?.description}</p><a class="text-link" href={`/${article.slug}/`}>Read article <span aria-hidden="true">↗</span></a></div></article>)}</div></section>}</div></section>}
+      {isArticle && articleHtml && (
+        <>
+          <section class="article-content">
+            <div class="container article-layout">
+              <div class="article-layout__main">
+                <article class="prose" set:html={articleHtmlWithIds} />
+              </div>
+              <aside class="article-layout__aside">
+                <ArticleToc headings={tocHeadings} />
+              </aside>
+            </div>
+          </section>
+          <BlogFaqs items={faqItems} />
+        </>
+      )}
+      {isArticle && sanityPost?.body && !contentHtml && (
+        <>
+          <section class="article-content">
+            <div class="container article-layout">
+              <div class="article-layout__main">
+                <article class="prose">
+                  <PostBody value={sanityPost.body} />
+                </article>
+              </div>
+              <aside class="article-layout__aside">
+                <ArticleToc headings={tocHeadings} />
+              </aside>
+            </div>
+          </section>
+          <BlogFaqs items={sanityFaqItems} />
+        </>
+      )}
+      {articleHtml && !isArticle && !isPortfolioProject && path !== '/journal/' && path !== '/collections/' && (
+        <>
+          <section class="section content-section">
+            <div class="container content-layout">
+              <aside class="content-rail">
+                <p class="eyebrow">Orange Offices</p>
+                <p>Thoughtful workplace design, planned around your people and business.</p>
+                <a class="text-link" href="/contact/">Discuss your project <span aria-hidden="true">↗</span></a>
+              </aside>
+              <article class="prose" set:html={articleHtml} />
+            </div>
+          </section>
+          <BlogFaqs items={faqItems} />
+        </>
+      )}
+      {isArticle && <section class="article-extras"><div class="container"><ArticleShare title={heading} path={path} />{sanityPost?.author?.name && <section class="article-author"><p class="eyebrow">Written by</p><h2>{sanityPost.author.name}</h2>{sanityPost.author.designation && <p>{sanityPost.author.designation}</p>}</section>}{relatedArticles.length > 0 && <section class="related-articles" aria-labelledby="related-articles-heading"><p class="eyebrow">Continue reading</p><h2 id="related-articles-heading">Related articles</h2><div class="grid grid--3 article-grid">{relatedArticles.map((article) => <article class="card article-card">{article.featuredImage?.asset?.url && <img src={`${article.featuredImage.asset.url}?auto=format&fit=crop&w=800&h=520&q=82`} alt={article.featuredImage.alt ?? ''} width="800" height="520" loading="lazy" />}<div><p class="article-meta">{new Date(article.publishedAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</p><h3><a href={`/${article.slug}/`}>{article.title}</a></h3><p>{article.excerpt || article.seo?.description}</p><a class="text-link" href={`/${article.slug}/`}>Read article <span aria-hidden="true">↗</span></a></div></article>)}</div></section>}</div></section>}
       {path === '/about/' && <section class="section section--dark"><div class="container feature-split"><div><p class="eyebrow">Our approach</p><h2>Spaces that work as hard as your people.</h2><p>We unite strategic planning, detailed design and reliable execution to deliver office environments with a strong sense of place.</p><a class="button button--ghost" href="/contact/">Start a conversation</a></div>{record?.image && <img src={record.image} alt="Orange Offices workspace" width="1200" height="800" loading="lazy" />}</div></section>}
       {journalPageNumber > 0 && <section class="section journal-archive"><div class="container"><div class="section-heading"><div><p class="eyebrow">All articles · {articles.length}</p><h2>{journalPageNumber === 1 ? 'Latest from the journal' : 'More from the journal'}</h2></div></div><div class="grid grid--3 article-grid">{visibleArticles.map((article) => <article class="card article-card">{article.featuredImage?.asset?.url && <img src={`${article.featuredImage.asset.url}?auto=format&fit=crop&w=800&h=520&q=82`} alt={article.featuredImage.alt ?? ''} width="800" height="520" loading="lazy" />}<div><p class="article-meta">{new Date(article.publishedAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</p><h3><a href={`/${article.slug}/`}>{article.title}</a></h3><p>{article.excerpt || article.seo?.description}</p><a class="text-link" href={`/${article.slug}/`}>Read article <span aria-hidden="true">↗</span></a></div></article>)}</div>{totalJournalPages > 1 && <nav class="pagination" aria-label="Journal pages">{journalPageNumber > 1 && <a href={journalPageNumber === 2 ? '/journal/' : `/journal/page/${journalPageNumber - 1}/`}>← Previous</a>}<span>Page {journalPageNumber} of {totalJournalPages}</span>{journalPageNumber < totalJournalPages && <a href={`/journal/page/${journalPageNumber + 1}/`}>Next →</a>}</nav>}</div></section>}
       {!record && !blogPageNumber && <section class="section service-overview"><div class="container"><div class="section-heading"><div><p class="eyebrow">Our approach</p><h2>{service ? 'A considered approach from brief to delivery.' : 'Let’s create a better workplace.'}</h2></div></div><div class="grid grid--3">{[['Discover', 'We understand your workplace, people and practical requirements.'], ['Design', 'Our team creates a purposeful design with material and cost clarity.'], ['Deliver', 'We coordinate every detail through a considered, reliable handover.']].map(([step, copy], index) => <article class="card"><span class="card__number">0{index + 1}</span><h3>{step}</h3><p>{copy}</p></article>)}</div></div></section>}

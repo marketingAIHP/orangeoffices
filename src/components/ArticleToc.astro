@@ -1,0 +1,23 @@
+---
+interface Heading { id: string; text: string; level: 2 | 3 }
+const { headings = [] } = Astro.props as { headings?: Heading[] };
+---
+{headings.length >= 3 && (
+  <details class="article-toc" open>
+    <summary>On this page</summary>
+    <ol>
+      {headings.map((heading) => (
+        <li class:list={{ 'article-toc__subitem': heading.level === 3 }}>
+          <a href={`#${heading.id}`}>{heading.text}</a>
+        </li>
+      ))}
+    </ol>
+  </details>
+)}
+
+<script is:inline>
+  if (typeof window !== 'undefined' && window.innerWidth <= 768) {
+    document.querySelectorAll('.article-toc[open]').forEach((el) => el.removeAttribute('open'));
+  }
+</script>
+

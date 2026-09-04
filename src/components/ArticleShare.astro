@@ -4,12 +4,12 @@ const pageUrl = `https://orangeoffices.in${path}`
 const encodedUrl = encodeURIComponent(pageUrl)
 const encodedTitle = encodeURIComponent(title)
 const shares = [
-  ['Facebook', 'f', `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`, 'article-share__item--facebook'],
-  ['Pinterest', 'p', `https://pinterest.com/pin/create/button/?url=${encodedUrl}&description=${encodedTitle}`, 'article-share__item--pinterest'],
-  ['Twitter', '♥', `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`, 'article-share__item--twitter'],
-  ['LinkedIn', 'in', `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`, 'article-share__item--linkedin'],
+  ['Facebook', `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`, '<path d="M14 8h3V3h-3c-3.3 0-5 2-5 5v3H6v5h3v5h5v-5h3.6l.7-5H14V8c0-.6.4-1 1-1Z"/>'],
+  ['LinkedIn', `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`, '<path d="M6.5 8.2A2.3 2.3 0 1 0 6.5 3.6a2.3 2.3 0 0 0 0 4.6ZM4.3 9.7h4.4V21H4.3V9.7Zm7.2 0h4.2v1.55h.06c.6-1.1 2-2.25 4.1-2.25 4.35 0 5.15 2.85 5.15 6.55V21h-4.4v-4.8c0-1.15-.02-2.63-1.6-2.63-1.6 0-1.85 1.25-1.85 2.55V21h-4.4V9.7Z"/>'],
+  ['X', `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`, '<path d="M4 4l6.4 8.6L4.3 20H7l4.7-5.5L15.8 20H21l-6.7-9L20 4h-2.7l-4.2 5L9.3 4H4Zm4 1.8h.8l8.3 12.4h-.8L8 5.8Z"/>'],
+  ['WhatsApp', `https://wa.me/?text=${encodedTitle}%20${encodedUrl}`, '<path d="M12 3a8.8 8.8 0 0 0-7.5 13.4L3 21l4.8-1.4A8.9 8.9 0 1 0 12 3Zm0 16.1a7.1 7.1 0 0 1-3.6-1l-.25-.15-2.85.83.86-2.77-.17-.28A7.1 7.1 0 1 1 12 19.1Zm3.9-5.35c-.22-.1-1.3-.64-1.5-.71-.2-.07-.34-.1-.48.1-.14.21-.54.7-.66.84-.12.14-.25.16-.46.05a5.8 5.8 0 0 1-1.7-1.05 6.4 6.4 0 0 1-1.18-1.47c-.12-.21 0-.32.1-.42.1-.1.21-.25.31-.37.1-.12.14-.21.21-.35.07-.14.04-.27-.02-.37-.06-.1-.48-1.15-.66-1.58-.17-.4-.35-.35-.48-.36h-.4c-.14 0-.36.05-.55.26-.19.2-.72.7-.72 1.7s.74 1.97.84 2.1c.1.14 1.46 2.23 3.53 3.13.49.21.87.34 1.17.44.49.16.94.14 1.3.08.4-.06 1.3-.53 1.48-1.05.18-.52.18-.97.13-1.06-.05-.1-.19-.15-.4-.26Z"/>'],
 ]
 ---
 <nav class="article-share" aria-label="Share this article">
-  {shares.map(([label, icon, href, className]) => <a class:list={['article-share__item', className]} href={href} target="_blank" rel="noreferrer"><span aria-hidden="true">{icon}</span>{label}</a>)}
+  <span class="article-share__label">Share</span>{shares.map(([label, href, icon]) => <a class="article-share__item" href={href} target="_blank" rel="noreferrer" aria-label={`Share on ${label}`} title={`Share on ${label}`}><svg viewBox="0 0 24 24" aria-hidden="true" set:html={icon} /></a>)}
 </nav>

@@ -1,0 +1,38 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  image?: string | null;
+  imageAlt?: string;
+  path: string;
+  category?: string;
+  publishedAt?: string;
+  modifiedAt?: string;
+  readingTime: number;
+  author?: { name?: string; designation?: string };
+}
+const { title, description, image, imageAlt = '', path, category = 'Journal', publishedAt, modifiedAt, readingTime, author } = Astro.props;
+const formatDate = (value?: string) => value ? new Intl.DateTimeFormat('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }).format(new Date(value)) : undefined;
+const currentLabel = title.length > 52 ? `${title.slice(0, 49)}…` : title;
+---
+<header class="article-hero">
+  <div class="container">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="/">Home</a><span aria-hidden="true">/</span><a href="/journal/">Journal</a><span aria-hidden="true">/</span><span aria-current="page" title={title}>{currentLabel}</span>
+    </nav>
+    <div class="article-hero__grid">
+      <div class="article-hero__copy">
+        <p class="eyebrow">{category}</p>
+        <h1>{title}</h1>
+        <p class="article-hero__description">{description}</p>
+        <div class="article-meta article-meta--hero">
+          <span>{author?.name || 'Orange Offices'}</span>
+          {publishedAt && <time datetime={publishedAt}>Published {formatDate(publishedAt)}</time>}
+          {modifiedAt && modifiedAt !== publishedAt && <time datetime={modifiedAt}>Updated {formatDate(modifiedAt)}</time>}
+          <span>{readingTime} min read</span>
+        </div>
+      </div>
+      {image && <figure class="article-hero__media"><img src={image} alt={imageAlt} width="1600" height="1067" loading="eager" fetchpriority="high" decoding="async" /></figure>}
+    </div>
+  </div>
+</header>
