@@ -15,6 +15,8 @@ import BlogFaqs from '../components/BlogFaqs.astro';
 import ArticleShare from '../components/ArticleShare.astro';
 import ArticleHero from '../components/ArticleHero.astro';
 import ArticleToc from '../components/ArticleToc.astro';
+import ArticleWorkspaceCta from '../components/ArticleWorkspaceCta.astro';
+import ArticleAuthor from '../components/ArticleAuthor.astro';
 import AnimationRuntime from '../components/AnimationRuntime.astro';
 import { getAllPosts } from '../lib/sanity/posts';
 import type { SanityPost } from '../lib/sanity/types';
@@ -112,8 +114,12 @@ const articleHtmlWithIds = articleHtml?.replace(/<h([23])([^>]*)>([\s\S]*?)<\/h\
               </div>
               <aside class="article-layout__aside">
                 <ArticleToc headings={tocHeadings} />
+                <ArticleWorkspaceCta />
               </aside>
             </div>
+          </section>
+          <section class="article-share-before-faq">
+            <div class="container"><ArticleShare title={heading} path={path} /></div>
           </section>
           <BlogFaqs items={faqItems} />
         </>
@@ -129,8 +135,12 @@ const articleHtmlWithIds = articleHtml?.replace(/<h([23])([^>]*)>([\s\S]*?)<\/h\
               </div>
               <aside class="article-layout__aside">
                 <ArticleToc headings={tocHeadings} />
+                <ArticleWorkspaceCta />
               </aside>
             </div>
+          </section>
+          <section class="article-share-before-faq">
+            <div class="container"><ArticleShare title={heading} path={path} /></div>
           </section>
           <BlogFaqs items={sanityFaqItems} />
         </>
@@ -150,7 +160,7 @@ const articleHtmlWithIds = articleHtml?.replace(/<h([23])([^>]*)>([\s\S]*?)<\/h\
           <BlogFaqs items={faqItems} />
         </>
       )}
-      {isArticle && <section class="article-extras"><div class="container"><ArticleShare title={heading} path={path} />{sanityPost?.author?.name && <section class="article-author"><p class="eyebrow">Written by</p><h2>{sanityPost.author.name}</h2>{sanityPost.author.designation && <p>{sanityPost.author.designation}</p>}</section>}{relatedArticles.length > 0 && <section class="related-articles" aria-labelledby="related-articles-heading"><p class="eyebrow">Continue reading</p><h2 id="related-articles-heading">Related articles</h2><div class="grid grid--3 article-grid">{relatedArticles.map((article) => <article class="card article-card">{article.featuredImage?.asset?.url && <img src={`${article.featuredImage.asset.url}?auto=format&fit=crop&w=800&h=520&q=82`} alt={article.featuredImage.alt ?? ''} width="800" height="520" loading="lazy" />}<div><p class="article-meta">{new Date(article.publishedAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</p><h3><a href={`/${article.slug}/`}>{article.title}</a></h3><p>{article.excerpt || article.seo?.description}</p><a class="text-link" href={`/${article.slug}/`}>Read article <span aria-hidden="true">↗</span></a></div></article>)}</div></section>}</div></section>}
+      {isArticle && (sanityPost?.author?.name || relatedArticles.length > 0) && <section class="article-extras"><div class="container">{sanityPost?.author?.name && <ArticleAuthor author={sanityPost.author} />}{relatedArticles.length > 0 && <section class="related-articles" aria-labelledby="related-articles-heading"><p class="eyebrow">Continue reading</p><h2 id="related-articles-heading">Related articles</h2><div class="grid grid--3 article-grid">{relatedArticles.map((article) => <article class="card article-card">{article.featuredImage?.asset?.url && <img src={`${article.featuredImage.asset.url}?auto=format&fit=crop&w=800&h=520&q=82`} alt={article.featuredImage.alt ?? ''} width="800" height="520" loading="lazy" />}<div><p class="article-meta">{new Date(article.publishedAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</p><h3><a href={`/${article.slug}/`}>{article.title}</a></h3><p>{article.excerpt || article.seo?.description}</p><a class="text-link" href={`/${article.slug}/`}>Read article <span aria-hidden="true">↗</span></a></div></article>)}</div></section>}</div></section>}
       {path === '/about/' && <section class="section section--dark"><div class="container feature-split"><div><p class="eyebrow">Our approach</p><h2>Spaces that work as hard as your people.</h2><p>We unite strategic planning, detailed design and reliable execution to deliver office environments with a strong sense of place.</p><a class="button button--ghost" href="/contact/">Start a conversation</a></div>{record?.image && <img src={record.image} alt="Orange Offices workspace" width="1200" height="800" loading="lazy" />}</div></section>}
       {journalPageNumber > 0 && <section class="section journal-archive"><div class="container"><div class="section-heading"><div><p class="eyebrow">All articles · {articles.length}</p><h2>{journalPageNumber === 1 ? 'Latest from the journal' : 'More from the journal'}</h2></div></div><div class="grid grid--3 article-grid">{visibleArticles.map((article) => <article class="card article-card">{article.featuredImage?.asset?.url && <img src={`${article.featuredImage.asset.url}?auto=format&fit=crop&w=800&h=520&q=82`} alt={article.featuredImage.alt ?? ''} width="800" height="520" loading="lazy" />}<div><p class="article-meta">{new Date(article.publishedAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</p><h3><a href={`/${article.slug}/`}>{article.title}</a></h3><p>{article.excerpt || article.seo?.description}</p><a class="text-link" href={`/${article.slug}/`}>Read article <span aria-hidden="true">↗</span></a></div></article>)}</div>{totalJournalPages > 1 && <nav class="pagination" aria-label="Journal pages">{journalPageNumber > 1 && <a href={journalPageNumber === 2 ? '/journal/' : `/journal/page/${journalPageNumber - 1}/`}>← Previous</a>}<span>Page {journalPageNumber} of {totalJournalPages}</span>{journalPageNumber < totalJournalPages && <a href={`/journal/page/${journalPageNumber + 1}/`}>Next →</a>}</nav>}</div></section>}
       {!record && !blogPageNumber && <section class="section service-overview"><div class="container"><div class="section-heading"><div><p class="eyebrow">Our approach</p><h2>{service ? 'A considered approach from brief to delivery.' : 'Let’s create a better workplace.'}</h2></div></div><div class="grid grid--3">{[['Discover', 'We understand your workplace, people and practical requirements.'], ['Design', 'Our team creates a purposeful design with material and cost clarity.'], ['Deliver', 'We coordinate every detail through a considered, reliable handover.']].map(([step, copy], index) => <article class="card"><span class="card__number">0{index + 1}</span><h3>{step}</h3><p>{copy}</p></article>)}</div></div></section>}

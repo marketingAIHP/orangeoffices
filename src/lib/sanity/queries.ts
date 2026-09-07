@@ -4,7 +4,7 @@ const postProjection = `{
   _id, title, "slug": slug.current, excerpt, body, publishedAt, modifiedAt,
   readingTime, featured,
   featuredImage{alt, caption, asset->{_id, url, metadata{dimensions, lqip}}},
-  author->{_id, name, "slug": slug.current, designation, image{alt, asset->{url}}},
+  author->{_id, name, "slug": slug.current, designation, bio, linkedinUrl, image{alt, asset->{url}}},
   faqs[]{question, answer},
   categories[]->{_id, title, "slug": slug.current},
   seo{title, description, canonicalUrl, noIndex, ogTitle, ogDescription,

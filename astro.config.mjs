@@ -20,6 +20,12 @@ export default defineConfig({
   site: 'https://orangeoffices.in',
   trailingSlash: 'always',
   output: 'server',
+  vite: {
+    // Builds must not replace optimized modules used by a running dev server.
+    cacheDir: process.env.NODE_ENV === 'production'
+      ? 'node_modules/.vite-build'
+      : 'node_modules/.vite-dev',
+  },
   adapter: cloudflare(),
   integrations: [sanity({
     projectId: PUBLIC_SANITY_PROJECT_ID,

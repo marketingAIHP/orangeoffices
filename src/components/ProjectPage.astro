@@ -242,10 +242,8 @@ const data = parseProjectDetail(project, projects);
 
         <div class="project-gallery__grid">
           {data.galleryImages.map((img, idx) => {
-            // Apply varied grid spans for architectural editorial rhythm
-            const isFeatured = idx === 0 || idx === 3 || idx === 6;
             return (
-              <div class:list={['project-gallery__cell', { 'project-gallery__cell--wide': isFeatured }]}>
+              <div class="project-gallery__cell">
                 <button
                   type="button"
                   class="project-gallery__item-btn"
@@ -258,8 +256,8 @@ const data = parseProjectDetail(project, projects);
                   <img
                     src={img.src}
                     alt={img.alt}
-                    width={isFeatured ? 1600 : 1000}
-                    height={isFeatured ? 1000 : 750}
+                    width="1000"
+                    height="1000"
                     loading="lazy"
                     decoding="async"
                     class="project-gallery__img"

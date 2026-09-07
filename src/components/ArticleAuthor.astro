@@ -1,0 +1,22 @@
+---
+interface Author { name?: string; designation?: string; bio?: string; linkedinUrl?: string; image?: {alt?: string; asset?: {url?: string}} }
+const {author} = Astro.props as {author: Author};
+const linkedinUrl = author.linkedinUrl || 'https://www.linkedin.com/company/orangeoffices/';
+const isUdit = author.name?.trim().toLowerCase() === 'udit chauhan';
+const designation = author.designation || (isUdit ? 'Lead Developer, AIHP' : 'Contributor, Orange Offices');
+const bio = author.bio || (isUdit ? 'Udit Chauhan is Lead Developer at AIHP. In his free time he likes to learn more about AI, vibe code and watch Netflix.' : undefined);
+---
+<section class="author-card" aria-label={`Written by ${author.name}`}>
+  <div class="author-card__content"><p class="author-card__label">Written by</p><h2>{author.name}</h2><p class="author-card__role">{designation}</p>{bio && <p class="author-card__bio">{bio}</p>}<a class="author-card__linkedin" href={linkedinUrl} target="_blank" rel="noreferrer"><span aria-hidden="true">in</span> Connect on LinkedIn</a></div>
+</section>
+<style>
+  .author-card { max-width:850px; min-width:min(100%, 320px); width:100%; padding:.9rem 1.25rem; border:1px solid var(--color-field-border); border-radius:.75rem; background:var(--color-warm-surface); box-sizing:border-box; }
+  .author-card__content { min-width:0; width:100%; }
+  .author-card__label { margin:0 0 .35rem; color:#08798d; font-size:.75rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; }
+  .author-card h2 { max-width:none; margin:0; font-family:var(--font-serif); font-size:1.5rem; line-height:1.15; letter-spacing:-.02em; }
+  .author-card__role { margin:.15rem 0 0; color:#667085; }
+  .author-card__bio { max-width:65ch; margin:.4rem 0 0; color:var(--color-body); line-height:1.45; }
+  .author-card__linkedin { display:inline-flex; align-items:center; gap:.45rem; margin-top:.5rem; color:#08798d; font-weight:700; text-decoration:none; }
+  .author-card__linkedin span { font-size:.85rem; border:1px solid currentColor; border-radius:2px; line-height:1; }
+  .author-card__linkedin:hover { color:var(--color-brand); }
+</style>
