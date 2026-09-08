@@ -1127,13 +1127,14 @@ h3 { font-size: 20px; font-weight: var(--font-weight-medium); letter-spacing: no
   background: rgb(255 144 0 / 12%);
   color: var(--color-heading);
   font-size: 1.02rem;
-  font-weight: 600;
+  font-weight: 400;
   font-style: normal;
   border-radius: 0 .35rem .35rem 0;
 }
 .article-content .prose > .article-summary b {
   color: var(--color-forest);
   font-size: .75rem;
+  font-weight: 700;
   letter-spacing: .13em;
   text-transform: uppercase;
   display: block;
@@ -2786,6 +2787,15 @@ h3 { font-size: 20px; font-weight: var(--font-weight-medium); letter-spacing: no
   background: var(--color-brand);
   border-color: var(--color-brand);
   color: var(--color-dark);
+}
+
+@media (min-width: 761px) {
+  .article-hero__media {
+    align-self: start;
+    height: clamp(240px, 22vw, 300px);
+    aspect-ratio: 4 / 3;
+  }
+  .article-hero__media img { height: 100%; object-fit: cover; }
 }
 
 .about-hero p:not(.eyebrow) { max-width: 70ch; }
