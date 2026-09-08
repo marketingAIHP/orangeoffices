@@ -59,6 +59,28 @@ export interface ParsedProject {
 
 const mediaMap = mediaMapData as Record<string, { src: string; isDetailCrop?: boolean; alt?: string }[]>;
 
+// Editorial walkthrough order for galleries where the supplied media sequence
+// does not follow the visitor journey through the office.
+const gallerySequence: Record<string, string[]> = {
+  mozaiq: [
+    '/wp-content/uploads/2025/01/Mozaiq-1-e1737032685676.webp',
+    '/wp-content/uploads/2025/01/jpeg-optimizer__A7R6778-1.webp',
+    '/wp-content/uploads/2025/01/jpeg-optimizer__A7R677-2.webp',
+    '/wp-content/uploads/2025/01/jpeg-optimizer__A7R6772-2.webp',
+    '/wp-content/uploads/2025/01/jpeg-optimizer__A7R6756-2.webp',
+    '/wp-content/uploads/2025/01/jpeg-optimizer__A7R6783-1.webp'
+  ]
+};
+
+const galleryLabels: Record<string, string> = {
+  '/wp-content/uploads/2025/01/Mozaiq-1-e1737032685676.webp': 'MOZAIQ reception and brand wall',
+  '/wp-content/uploads/2025/01/jpeg-optimizer__A7R6778-1.webp': 'MOZAIQ open workspace',
+  '/wp-content/uploads/2025/01/jpeg-optimizer__A7R677-2.webp': 'MOZAIQ meeting room',
+  '/wp-content/uploads/2025/01/jpeg-optimizer__A7R6772-2.webp': 'MOZAIQ meeting room',
+  '/wp-content/uploads/2025/01/jpeg-optimizer__A7R6756-2.webp': 'MOZAIQ café and refreshment area',
+  '/wp-content/uploads/2025/01/jpeg-optimizer__A7R6783-1.webp': 'MOZAIQ collaboration room'
+};
+
 export function parseProjectDetail(project: ProjectRecord, allProjects: ProjectRecord[]): ParsedProject {
   const source = project.contentHtml || '';
 
@@ -192,12 +214,28 @@ export function parseProjectDetail(project: ProjectRecord, allProjects: ProjectR
 
   // 4. Media gallery from project-media.json
   const mediaGallery = mediaMap[project.slug] || [];
+  // The media inventory is curated in the intended walkthrough order. Omit
+  // generic detail crops and repeated files so every gallery card is a unique
+  // photograph from this specific project.
+  const gallerySources = new Set<string>();
   const galleryImages: ProjectImage[] = mediaGallery
     .filter((m) => !m.isDetailCrop)
-    .map((m) => ({
+    .filter((m) => {
+      if (gallerySources.has(m.src)) return false;
+      gallerySources.add(m.src);
+      return true;
+    })
+    .map((m, index) => ({
       src: m.src,
-      alt: m.alt || `${project.title} Workplace Interior`
-    }));
+      alt: galleryLabels[m.src] || (m.alt && !/^(?:[A-Z ]+ Office Interior|[A-Za-z ]+ \(\d+\)|DSCF\d+)$/i.test(m.alt)
+        ? m.alt
+        : `${project.title} completed workspace view ${index + 1}`)
+    }))
+    .sort((a, b) => {
+      const sequence = gallerySequence[project.slug];
+      if (!sequence) return 0;
+      return sequence.indexOf(a.src) - sequence.indexOf(b.src);
+    });
 
   // Ensure hero image is high quality
   const heroImage = project.image || galleryImages[0]?.src || '/brand/orange-offices-logo-white.png';

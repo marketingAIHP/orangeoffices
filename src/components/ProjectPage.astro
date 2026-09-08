@@ -92,34 +92,6 @@ const data = parseProjectDetail(project, projects);
         </div>
       </div>
 
-      {/* Optional Material / Custom Detail Vignettes */}
-      {data.overview?.detailImages && data.overview.detailImages.length > 0 && (
-        <div class="project-vignettes">
-          <div class="project-vignettes__header">
-            <span class="project-vignettes__tag">Custom Details & Materiality</span>
-            <p class="project-vignettes__sub">Curated bespoke finishes, collaborative textures and breakout furniture elements.</p>
-          </div>
-          <div class="project-vignettes__grid">
-            {data.overview.detailImages.map((img, idx) => (
-              <figure class="project-vignettes__item">
-                <img
-                  src={img.src}
-                  alt={`${data.title} custom architectural detail ${idx + 1}`}
-                  width="720"
-                  height="720"
-                  loading="lazy"
-                  decoding="async"
-                  class="project-vignettes__img"
-                />
-                <figcaption class="project-vignettes__caption">
-                  <span>Detail {String(idx + 1).padStart(2, '0')}</span>
-                  <span>Bespoke Fitout</span>
-                </figcaption>
-              </figure>
-            ))}
-          </div>
-        </div>
-      )}
     </div>
   </section>
 
@@ -265,7 +237,7 @@ const data = parseProjectDetail(project, projects);
                   <div class="project-gallery__overlay">
                     <span class="project-gallery__num">{String(idx + 1).padStart(2, '0')}</span>
                     <span class="project-gallery__caption-text">{img.alt}</span>
-                    <span class="project-gallery__icon" aria-hidden="true">↗</span>
+                    <span class="project-gallery__icon" aria-hidden="true">→</span>
                   </div>
                 </button>
               </div>
@@ -307,7 +279,7 @@ const data = parseProjectDetail(project, projects);
         </p>
         <div class="project-cta__actions">
           <a class="button project-cta__button" href="/contact/">
-            Discuss Your Office Project <span aria-hidden="true">↗</span>
+            Discuss Your Office Project <span aria-hidden="true">→</span>
           </a>
           <a class="button button--ghost project-cta__button-secondary" href="tel:+917861004918">
             Call +91 78610 04918
@@ -327,7 +299,7 @@ const data = parseProjectDetail(project, projects);
             <h2 class="project-related__heading">Explore More Workplaces</h2>
           </div>
           <a href="/collections/" class="text-link project-related__view-all">
-            View All Projects <span aria-hidden="true">↗</span>
+            View All Projects <span aria-hidden="true">→</span>
           </a>
         </div>
 
@@ -356,7 +328,7 @@ const data = parseProjectDetail(project, projects);
                     {item.capacity && <span>· {item.capacity}</span>}
                   </div>
                   <span class="text-link project-related__cta-link">
-                    View Case Study <span aria-hidden="true">↗</span>
+                    View Case Study <span aria-hidden="true">→</span>
                   </span>
                 </div>
               </a>

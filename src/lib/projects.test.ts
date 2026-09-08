@@ -32,7 +32,7 @@ describe('parseProjectDetail', () => {
     expect(parsed.testimonial?.role).toBe('CEO & Co-Founder, Advatix APAC');
     expect(parsed.testimonial?.youtubeId).toBe('-gbTOzHDfMo');
 
-    expect(parsed.galleryImages.length).toBe(9);
+    expect(parsed.galleryImages.length).toBe(8);
     expect(parsed.relatedProjects.length).toBe(3);
     expect(parsed.previousProject).toBeDefined();
     expect(parsed.nextProject).toBeDefined();
