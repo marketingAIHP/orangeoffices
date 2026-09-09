@@ -1,1 +1,73 @@
-<form class="form" method="post" action="/api/leads/" data-form="consultation"><div><label for="name">Name</label><input id="name" name="name" autocomplete="name" required /></div><div><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email" required /></div><div><label for="phone">Phone</label><input id="phone" name="phone" type="tel" autocomplete="tel" /></div><div><label for="message">Tell us about your workspace</label><textarea id="message" name="message" required></textarea></div><input type="hidden" name="form_id" value="consultation" /><button class="button" type="submit">Request a consultation</button></form>
+<form class="form" id="contact-form" method="post" action="/api/leads/" data-form="consultation" novalidate>
+  <div class="form__status" role="alert" tabindex="-1" hidden></div>
+  <div><label for="name">Name <span aria-hidden="true">*</span></label><input id="name" name="name" autocomplete="name" minlength="2" maxlength="120" required aria-describedby="name-error" /><small class="form__error" id="name-error"></small></div>
+  <div><label for="email">Work email <span aria-hidden="true">*</span></label><input id="email" name="email" type="email" autocomplete="email" maxlength="254" required aria-describedby="email-error" /><small class="form__error" id="email-error"></small></div>
+  <div><label for="phone">Phone <span class="form__optional">Optional</span></label><input id="phone" name="phone" type="tel" autocomplete="tel" maxlength="40" aria-describedby="phone-error" /><small class="form__error" id="phone-error"></small></div>
+  <div><label for="message">Tell us about your workspace <span aria-hidden="true">*</span></label><textarea id="message" name="message" minlength="10" maxlength="4000" required aria-describedby="message-hint message-error"></textarea><small id="message-hint">Include your location, approximate area or team size, and target timeline.</small><small class="form__error" id="message-error"></small></div>
+  <input type="hidden" name="form_id" value="consultation" /><input type="hidden" name="source_path" value="" />
+  <button class="button" type="submit">Book a free consultation <span aria-hidden="true">→</span></button>
+  <p class="form__privacy">We’ll use these details only to respond to your enquiry.</p>
+</form>
+<script is:inline>
+  document.querySelectorAll('[data-form="consultation"]').forEach((form) => {
+    const status = form.querySelector('.form__status');
+    const submit = form.querySelector('button[type="submit"]');
+    const fields = [...form.querySelectorAll('input:not([type="hidden"]), textarea')];
+    const messages = { name: 'Enter at least 2 characters.', email: 'Enter a valid email address.', message: 'Tell us a little more (at least 10 characters).' };
+    const queryError = new URLSearchParams(location.search).get('enquiry_error');
+    if (queryError) {
+      status.innerHTML = queryError === 'validation'
+        ? 'Please check the form fields and try again.'
+        : 'We could not accept your enquiry right now. Call <a href="tel:+917861004918">+91 78610 04918</a> or try again.';
+      status.hidden = false;
+    }
+    const setError = (field, message = '') => {
+      const error = form.querySelector(`#${field.name}-error`);
+      if (error) error.textContent = message;
+      field.setAttribute('aria-invalid', message ? 'true' : 'false');
+    };
+    const validate = () => {
+      let firstInvalid;
+      fields.forEach((field) => {
+        const value = field.value.trim();
+        let message = '';
+        if (field.required && !value) message = 'This field is required.';
+        else if (field.name === 'name' && value.length < 2) message = messages.name;
+        else if (field.name === 'message' && value.length < 10) message = messages.message;
+        else if (field.name === 'email' && !field.validity.valid) message = messages.email;
+        setError(field, message);
+        if (message && !firstInvalid) firstInvalid = field;
+      });
+      return firstInvalid;
+    };
+    fields.forEach((field) => field.addEventListener('input', () => setError(field)));
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      status.hidden = true;
+      const firstInvalid = validate();
+      if (firstInvalid) {
+        status.textContent = 'Please correct the highlighted fields.';
+        status.hidden = false;
+        status.focus();
+        return;
+      }
+      form.elements.source_path.value = `${location.pathname}${location.search}`;
+      submit.disabled = true;
+      submit.setAttribute('aria-busy', 'true');
+      submit.firstChild.textContent = 'Sending… ';
+      try {
+        const response = await fetch(form.action, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } });
+        const result = await response.json();
+        if (!response.ok) throw new Error(result.message || 'We could not accept your enquiry right now.');
+        location.assign(result.redirect || '/thank-you/');
+      } catch (error) {
+        status.innerHTML = `${error.message} Call <a href="tel:+917861004918">+91 78610 04918</a> or try again.`;
+        status.hidden = false;
+        status.focus();
+        submit.disabled = false;
+        submit.removeAttribute('aria-busy');
+        submit.firstChild.textContent = 'Book a free consultation ';
+      }
+    });
+  });
+</script>

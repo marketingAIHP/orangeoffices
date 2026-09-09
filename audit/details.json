@@ -1,0 +1,106 @@
+[
+  {
+    "path": "/clients/",
+    "width": 1440,
+    "section": ".clients-intro",
+    "metrics": {
+      "x": 0,
+      "y": 163,
+      "w": 1440,
+      "h": 736.671875,
+      "text": "CLIENT SUCCESS STORIES\n\nWorkspaces built around what makes business work.\n\nDiscover why businesses choose Orange Offices for workplace design that improves how teams collaborate, grow and perform.\n\nFrom fully furnished office spaces to bespoke private offices, we shape corporate environments into places that support lasting success.\n\nStart a conversation\n→"
+    }
+  },
+  {
+    "path": "/clients/",
+    "width": 390,
+    "section": ".clients-gallery",
+    "metrics": {
+      "x": 0,
+      "y": -2208.390625,
+      "w": 390,
+      "h": 5317.234375,
+      "text": "OUR CLIENT NETWORK\n\nEmpowering success, one client at a time."
+    }
+  },
+  {
+    "path": "/collections/",
+    "width": 1440,
+    "section": ".collections-projects",
+    "metrics": {
+      "x": 0,
+      "y": -888.75,
+      "w": 1440,
+      "h": 2676.59375,
+      "text": "PORTFOLIO\n\nExplore our workplace projects\n\nDiscover spaces shaped for finance, healthcare, media, technology and growing businesses.\n\nADVATIX\nANAND RATHI WEALTH\nARCELOR MITTAL\nCORDELIA CRUISES\nDENTSU\nFARMART\nFRESENIUS KABI\nHT MEDIA\nINDAGRO\nINDXX\nMOZAIQ\nPioneer BPO Solutions\nRazor Group\nWISHLINK"
+    }
+  },
+  {
+    "path": "/contact/",
+    "width": 1440,
+    "section": ".contact-main",
+    "metrics": {
+      "x": 0,
+      "y": 0,
+      "w": 1440,
+      "h": 1157.71875,
+      "text": "LET’S CONNECT\n\nLet’s Connect and Bring Your Office Vision to Life\n\nPlanning to design or renovate your office? At Orange Offices, we offer expert Office Design Consultation in Gurgaon, helping businesses craft functional, stylish, and productivity-enhancing workspaces. A well-designed office not only enhances workflow efficiency but also reflects a company’s brand identity and culture. Our Office Design Consultation in Gurgaon ensures that every element of your office is optimized for comfort, c"
+    }
+  },
+  {
+    "path": "/",
+    "width": 390,
+    "section": ".home-gallery",
+    "metrics": {
+      "x": 0,
+      "y": 26.1875,
+      "w": 390,
+      "h": 846.65625,
+      "text": "OUR GALLERY\n\nWhere Every Space Tells a Story\n\nWe believe in design's power to connect and inspire. From architecture to art, our creations reflect the world around us. Here, we share the stories that fuel our creativity.\n\nExplore gallery →"
+    }
+  },
+  {
+    "path": "/project/anand-rathi-wealth/",
+    "width": 390,
+    "section": ".project-gallery",
+    "metrics": {
+      "x": 0,
+      "y": 218.953125,
+      "w": 390,
+      "h": 462.359375,
+      "text": "VISUAL TOUR\nCompleted Space Gallery\n6 PHOTOGRAPHS\n01\nANAND RATHI WEALTH completed workspace view 1\n→\n02\nANAND RATHI WEALTH completed workspace view 2\n→\n03\nANAND RATHI WEALTH completed workspace view 3\n→\n04\nANAND RATHI WEALTH completed workspace view 4\n→\n05\nANAND RATHI WEALTH completed workspace view 5\n→\n06\nANAND RATHI WEALTH completed workspace view 6\n→"
+    }
+  },
+  {
+    "path": "/journal/",
+    "width": 1440,
+    "section": ".journal-principles-feature",
+    "metrics": {
+      "x": 0,
+      "y": 102.65625,
+      "w": 1440,
+      "h": 796.921875,
+      "text": "Light as\nDesign\nHarmony in\nContrast\nNatural\nMaterials\nSustainability\nLess Is More\nPops of\nPersonality\nTimeless Design Principles for Inspiring Workspaces\n\nDiscover the perfect balance of simplicity, sustainability and creativity. These principles breathe life into workspaces, transforming them into havens of productivity and inspiration."
+    }
+  },
+  {
+    "shortMenu": {
+      "height": 400,
+      "scrollHeight": 469,
+      "overflow": "visible",
+      "ctaBottom": 548.890625
+    }
+  },
+  {
+    "hover": {
+      "color": "rgb(255, 255, 255)",
+      "background": "rgb(255, 144, 0)"
+    }
+  },
+  {
+    "lightboxOpen": true
+  },
+  {
+    "lightboxClosed": true
+  }
+]

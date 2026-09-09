@@ -106,14 +106,10 @@ export function parseProjectDetail(project: ProjectRecord, allProjects: ProjectR
     let loc = locationItem.value;
     if (!/gurgaon|gurugram|delhi/i.test(loc)) loc += ', Gurgaon';
     metadata.push({ label: 'Location', value: loc });
-  } else {
-    metadata.push({ label: 'Location', value: 'Gurgaon, Delhi NCR' });
   }
 
   if (yearItem) {
     metadata.push({ label: 'Year', value: yearItem.value });
-  } else {
-    metadata.push({ label: 'Year', value: '2024' });
   }
 
   if (scaleItem) {
@@ -263,8 +259,8 @@ export function parseProjectDetail(project: ProjectRecord, allProjects: ProjectR
   const relatedProjects = rotated.slice(0, 3).map((item) => {
     const locMatch = item.contentHtml?.match(/<h6>Location<\/h6>\s*([\s\S]*?)(?=<h[1-6]|$)/i);
     const seatsMatch = item.contentHtml?.match(/<h6>Seats<\/h6>\s*([\s\S]*?)(?=<h[1-6]|$)/i);
-    let loc = locMatch ? locMatch[1].replace(/<[^>]+>/g, '').trim() : 'Gurgaon';
-    if (!/gurgaon|gurugram|delhi/i.test(loc)) loc += ', Gurgaon';
+    let loc = locMatch ? locMatch[1].replace(/<[^>]+>/g, '').trim() : undefined;
+    if (loc && !/gurgaon|gurugram|delhi/i.test(loc)) loc += ', Gurgaon';
     const seats = seatsMatch ? `${seatsMatch[1].replace(/<[^>]+>/g, '').trim()} Seats` : undefined;
 
     return {

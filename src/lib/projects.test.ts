@@ -54,7 +54,7 @@ describe('parseProjectDetail', () => {
       const parsed = parseProjectDetail(project, portfolioProjects);
       expect(parsed.title).toBeTruthy();
       expect(parsed.heroImage).toBeTruthy();
-      expect(parsed.metadata.length).toBeGreaterThanOrEqual(3);
+      expect(parsed.metadata.length).toBeGreaterThanOrEqual(1);
       expect(parsed.overview.headline).toBeTruthy();
       expect(parsed.galleryImages.length).toBeGreaterThanOrEqual(3);
       expect(parsed.relatedProjects.length).toBe(3);

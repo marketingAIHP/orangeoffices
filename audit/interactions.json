@@ -1,0 +1,242 @@
+[
+  {
+    "menu": {
+      "height": 587,
+      "scrollHeight": 587,
+      "overflow": "visible",
+      "links": [
+        {
+          "text": "Home",
+          "y": 104,
+          "h": 50.1875
+        },
+        {
+          "text": "About",
+          "y": 158.984375,
+          "h": 50.1875
+        },
+        {
+          "text": "Services",
+          "y": 213.96875,
+          "h": 50.1875
+        },
+        {
+          "text": "Journal",
+          "y": 268.953125,
+          "h": 50.1875
+        },
+        {
+          "text": "Clients",
+          "y": 323.9375,
+          "h": 50.1875
+        },
+        {
+          "text": "Collections",
+          "y": 378.921875,
+          "h": 50.1875
+        },
+        {
+          "text": "Contact",
+          "y": 433.90625,
+          "h": 50.1875
+        },
+        {
+          "text": "Get started →",
+          "y": 504.890625,
+          "h": 44
+        }
+      ]
+    }
+  },
+  {
+    "width": 320,
+    "geometry": {
+      "header": [
+        {
+          "cls": "brand brand--header",
+          "x": 12,
+          "right": 202,
+          "display": "flex"
+        },
+        {
+          "cls": "nav",
+          "x": 0,
+          "right": 0,
+          "display": "none"
+        },
+        {
+          "cls": "button header__cta",
+          "x": 0,
+          "right": 0,
+          "display": "none"
+        },
+        {
+          "cls": "mobile-nav",
+          "x": 264,
+          "right": 308,
+          "display": "block"
+        }
+      ],
+      "overflow": [],
+      "h1": "58px"
+    }
+  },
+  {
+    "width": 768,
+    "geometry": {
+      "header": [
+        {
+          "cls": "brand brand--header",
+          "x": 19.203125,
+          "right": 229.203125,
+          "display": "flex"
+        },
+        {
+          "cls": "nav",
+          "x": 245.203125,
+          "right": 636.09375,
+          "display": "flex"
+        },
+        {
+          "cls": "button header__cta",
+          "x": 660.09375,
+          "right": 764.40625,
+          "display": "flex"
+        },
+        {
+          "cls": "mobile-nav",
+          "x": 0,
+          "right": 0,
+          "display": "none"
+        }
+      ],
+      "overflow": [],
+      "h1": "46px"
+    }
+  },
+  {
+    "width": 1024,
+    "geometry": {
+      "header": [
+        {
+          "cls": "brand brand--header",
+          "x": 25.59375,
+          "right": 235.59375,
+          "display": "flex"
+        },
+        {
+          "cls": "nav",
+          "x": 453.890625,
+          "right": 844.78125,
+          "display": "flex"
+        },
+        {
+          "cls": "button header__cta",
+          "x": 868.78125,
+          "right": 998.390625,
+          "display": "flex"
+        },
+        {
+          "cls": "mobile-nav",
+          "x": 0,
+          "right": 0,
+          "display": "none"
+        }
+      ],
+      "overflow": [],
+      "h1": "57.344px"
+    }
+  },
+  {
+    "width": 1920,
+    "geometry": {
+      "header": [
+        {
+          "cls": "brand brand--header",
+          "x": 260,
+          "right": 470,
+          "display": "flex"
+        },
+        {
+          "cls": "nav",
+          "x": 1017.0625,
+          "right": 1494.390625,
+          "display": "flex"
+        },
+        {
+          "cls": "button header__cta",
+          "x": 1530.390625,
+          "right": 1660,
+          "display": "flex"
+        },
+        {
+          "cls": "mobile-nav",
+          "x": 0,
+          "right": 0,
+          "display": "none"
+        }
+      ],
+      "overflow": [],
+      "h1": "82px"
+    }
+  },
+  {
+    "invalidForm": {
+      "url": "http://localhost:4321/api/leads/",
+      "text": "Please check the form fields and try again."
+    }
+  },
+  {
+    "article": "/office-space-planning-calculate-square-footage-delhi-ncr/"
+  },
+  {
+    "articleWidth": 390,
+    "headings": [
+      "Office Space Planning: How to Calculate Square Footage Requirements for Your Delhi NCR Office",
+      "The mathematics changed, and most people haven't caught up",
+      "Start here: square footage per employee, by layout",
+      "The 30-40% you'll forget if you're not careful",
+      "Putting the whole thing together",
+      "Space needs vary by industry, and the gap is real",
+      "What's different about doing this maths in Delhi NCR",
+      "Sizing for where you'll be, not just where you are",
+      "Where this goes wrong, over and over",
+      "When it's worth bringing in a space planner",
+      "Plan your office space",
+      "The answers before you ask.",
+      "Udit Chauhan",
+      "Related articles",
+      "Ready to create a workplace that works beautifully?",
+      "Featured integrations",
+      "No islands detected.",
+      "Audit",
+      "No accessibility or performance issues detected.",
+      " Settings"
+    ]
+  },
+  {
+    "articleWidth": 1440,
+    "headings": [
+      "Office Space Planning: How to Calculate Square Footage Requirements for Your Delhi NCR Office",
+      "The mathematics changed, and most people haven't caught up",
+      "Start here: square footage per employee, by layout",
+      "The 30-40% you'll forget if you're not careful",
+      "Putting the whole thing together",
+      "Space needs vary by industry, and the gap is real",
+      "What's different about doing this maths in Delhi NCR",
+      "Sizing for where you'll be, not just where you are",
+      "Where this goes wrong, over and over",
+      "When it's worth bringing in a space planner",
+      "Plan your office space",
+      "The answers before you ask.",
+      "Udit Chauhan",
+      "Related articles",
+      "Ready to create a workplace that works beautifully?",
+      "Featured integrations",
+      "No islands detected.",
+      "Audit",
+      "No accessibility or performance issues detected.",
+      " Settings"
+    ]
+  }
+]
