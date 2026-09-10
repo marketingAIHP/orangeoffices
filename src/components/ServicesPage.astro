@@ -10,13 +10,13 @@ const benefits = [
   ['▥', 'Crafted for Success', 'Tailor-made office interiors designed for productivity and style.'],
   ['♻', 'Eco-Friendly Innovation', 'Sustainable, eco-conscious solutions for modern workspaces.'],
   ['→', 'Clear Delivery Planning', 'A coordinated programme shaped around the approved design, scope and site.'],
-  ['◇', 'Trusted Across Delhi NCR', 'Serving businesses across Delhi NCR with world-class design.'],
+  ['⌖', 'Trusted Across Delhi NCR', 'Serving businesses across Delhi NCR with world-class design.'],
 ];
 ---
 
 <section class="section services-intro"><div class="container services-intro__grid"><img src="/wp-content/uploads/2025/01/Services4.jpg" alt="A completed contemporary office interior" width="1200" height="800" loading="eager" /><div><p class="eyebrow">What we do</p><h2>Office interiors designed around how you work</h2><p>We plan and deliver workplaces around your team, operations and brand—from bespoke interiors and responsible material choices to flexible planning and renovation.</p><p>Each engagement begins with the business need, then turns it into a clear design, scope and delivery plan.</p></div></div></section>
 
-<section class="section services-showcase"><div class="container"><div class="services-showcase__heading"><p class="eyebrow">Choose the right starting point</p><h2>Four services for changing workplace needs</h2><p>Compare the focus of each service, then explore the approach in more detail.</p></div><div class="services-showcase__grid">{services.map(([title, href, description], index) => <a class="service-image-card" href={href}><img src={serviceImages[index]} alt="" width="900" height="1100" loading="lazy" /><div><h3>{title}</h3><p>{description}</p><span>Explore service ↗</span></div></a>)}</div></div></section>
+<section class="section services-showcase"><div class="container"><div class="services-showcase__heading"><p class="eyebrow">Choose the right starting point</p><h2>Four services for changing workplace needs</h2><p>Compare the focus of each service, then explore the approach in more detail.</p></div><div class="services-showcase__grid">{services.map(([title, href, description], index) => <a class="service-image-card" href={href}><img src={serviceImages[index]} alt="" width="900" height="1100" loading="lazy" /><div><h3>{title}</h3><p>{description}</p><span>Explore service →</span></div></a>)}</div></div></section>
 
 <section class="services-banner"><div class="container"><h2>Ready to shape your next workplace?</h2><a class="button" href="/contact/">Book a free consultation</a></div></section>
 
