@@ -2793,11 +2793,15 @@ h3 { font-size: 20px; font-weight: var(--font-weight-medium); letter-spacing: no
 
 @media (min-width: 761px) {
   .article-hero__media {
-    align-self: start;
-    height: clamp(240px, 22vw, 300px);
-    aspect-ratio: 4 / 3;
+    align-self: stretch;
+    height: auto;
+    min-height: 340px;
+    aspect-ratio: auto;
+    border: 1px solid rgb(255 255 255 / 10%);
+    border-radius: .5rem;
+    box-shadow: 0 22px 48px rgb(0 0 0 / 24%);
   }
-  .article-hero__media img { height: 100%; object-fit: cover; }
+  .article-hero__media img { height: 100%; object-fit: cover; object-position: center; }
 }
 
 .about-hero p:not(.eyebrow) { max-width: 70ch; }

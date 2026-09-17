@@ -1,6 +1,6 @@
 export const site = 'https://orangeoffices.in';
 export const nav = [
-  ['Home', '/'], ['About', '/about/'], ['Services', '/services/'], ['Journal', '/journal/'], ['Clients', '/clients/'], ['Projects', '/collections/'], ['Contact', '/contact/'],
+  ['Home', '/'], ['About', '/about/'], ['Services', '/services/'], ['Journal', '/journal/'], ['Clients', '/clients/'], ['Projects', '/project/'], ['Contact', '/contact/'],
 ] as const;
 export const navChildren: Record<string, readonly (readonly [string, string])[]> = {};
 export const services = [
@@ -13,7 +13,7 @@ export const pages: Record<string, { title: string; description: string; eyebrow
   '/about/': { title: 'About Orange Offices', description: 'Learn about Orange Offices, premium office interior designers in Gurgaon.', eyebrow: 'About Orange Offices', heading: 'Design your space, inspire your creative vision', intro: 'We craft premium office interiors in Gurgaon, blending functionality, aesthetics and efficiency to create inspiring work environments.' },
   '/services/': { title: 'Office Interior Design Services', description: 'Explore Orange Offices office interior design services in Gurgaon.', eyebrow: 'What we offer', heading: 'A workspace designed around your ambition', intro: 'From initial ideas to delivery, our specialists help businesses create high-performing workplaces.' },
   '/clients/': { title: 'Our Clients | Orange Offices', description: 'The organisations that have trusted Orange Offices with their workspace.', eyebrow: 'Clients', heading: 'Trusted by world-class brands and organisations', intro: 'We bring a collaborative approach to every workplace, whether for a growing team or an established enterprise.' },
-  '/collections/': { title: 'Workplace Projects | Orange Offices', description: 'Explore completed Orange Offices workplace design projects.', eyebrow: 'Projects', heading: 'Workplaces shaped around people and purpose', intro: 'Explore considered office environments that balance people, purpose and performance.' },
+  '/project/': { title: 'Workplace Projects | Orange Offices', description: 'Explore completed Orange Offices workplace design projects.', eyebrow: 'Projects', heading: 'Workplaces shaped around people and purpose', intro: 'Explore considered office environments that balance people, purpose and performance.' },
   '/gallery/': { title: 'Office Interior Gallery | Orange Offices', description: 'Browse selected spaces and details from completed Orange Offices workplace projects.', eyebrow: 'Gallery', heading: 'Details that make a workplace work', intro: 'Explore completed spaces, materials and moments from selected Orange Offices projects.' },
   '/journal/': { title: 'Journal | Orange Offices', description: 'Office design insights from Orange Offices.', eyebrow: 'Journal', heading: 'Ideas for better workplaces', intro: 'Practical perspectives on office interiors, materials and workplace design.' },
   '/contact/': { title: 'Contact Orange Offices', description: 'Contact Orange Offices for an office interior design consultation.', eyebrow: 'Contact', heading: 'Let’s transform your workspace', intro: 'Tell us about your office and we will help you start the conversation.' },

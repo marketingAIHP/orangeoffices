@@ -96,12 +96,12 @@ const articleHtmlWithIds = articleHtml?.replace(/<h([23])([^>]*)>([\s\S]*?)<\/h\
 ---
 <BaseLayout title={title} description={description} noindex={path === '/thank-you/' || sanityPost?.seo?.noIndex} canonical={sanityPost?.seo?.canonicalUrl} article={sanityPost} articleMeta={isArticle ? { headline: heading, description, publishedAt: articlePublishedAt, modifiedAt: articleModifiedAt, image: articleImage, author: sanityPost?.author?.name } : undefined}>
   {isArticle && <ArticleHero title={heading} description={description} image={articleImage} imageAlt={articleImageAlt} path={path} category={articleCategory} publishedAt={articlePublishedAt} modifiedAt={articleModifiedAt} readingTime={articleReadingTime} author={sanityPost?.author} />}
-  {path !== '/about/' && path !== '/clients/' && path !== '/collections/' && path !== '/contact/' && path !== '/gallery/' && !journalPageNumber && !isPortfolioProject && !isArticle && <PageHero eyebrow={eyebrow} title={heading} description={description} image={sanityPost?.featuredImage?.asset?.url || record?.image} meta={sanityPost ? `Published ${sanityPost.publishedAt.slice(0, 10)}` : undefined} article={isArticle} />}
+  {path !== '/about/' && path !== '/clients/' && path !== '/project/' && path !== '/contact/' && path !== '/gallery/' && !journalPageNumber && !isPortfolioProject && !isArticle && <PageHero eyebrow={eyebrow} title={heading} description={description} image={sanityPost?.featuredImage?.asset?.url || record?.image} meta={sanityPost ? `Published ${sanityPost.publishedAt.slice(0, 10)}` : undefined} article={isArticle} />}
   {path === '/about/' && <AboutPage />}
   {path === '/clients/' && <ClientsPage logos={clientLogos} />}
   {path === '/services/' && <ServicesPage />}
   {journalPageNumber === 1 && <JournalPage />}
-  {path === '/collections/' && <CollectionsPage projects={projects} />}
+  {path === '/project/' && <CollectionsPage projects={projects} />}
   {path === '/contact/' && <ContactPage />}
   {path === '/gallery/' && <GalleryPage />}
   {isPortfolioProject && record && <ProjectPage project={record} projects={projects} />}
@@ -149,7 +149,7 @@ const articleHtmlWithIds = articleHtml?.replace(/<h([23])([^>]*)>([\s\S]*?)<\/h\
           <BlogFaqs items={sanityFaqItems} />
         </>
       )}
-      {articleHtml && !isArticle && !isPortfolioProject && path !== '/journal/' && path !== '/collections/' && path !== '/gallery/' && path !== '/thank-you/' && (
+      {articleHtml && !isArticle && !isPortfolioProject && path !== '/journal/' && path !== '/project/' && path !== '/gallery/' && path !== '/thank-you/' && (
         <>
           <section class="section content-section">
             <div class="container content-layout">
@@ -168,7 +168,7 @@ const articleHtmlWithIds = articleHtml?.replace(/<h([23])([^>]*)>([\s\S]*?)<\/h\
       {path === '/about/' && <section class="section section--dark"><div class="container feature-split"><div><p class="eyebrow">Our approach</p><h2>Spaces that work as hard as your people.</h2><p>We unite strategic planning, detailed design and reliable execution to deliver office environments with a strong sense of place.</p><a class="button button--ghost" href="/contact/">Book a free consultation</a></div>{record?.image && <img src={record.image} alt="Orange Offices workspace" width="1200" height="800" loading="lazy" />}</div></section>}
       {journalPageNumber > 0 && <section class="section journal-archive"><div class="container"><div class="section-heading"><div><p class="eyebrow">All articles · {articles.length}</p>{journalPageNumber === 1 ? <h2>Latest from the journal</h2> : <h1>More from the journal</h1>}</div></div><div class="grid grid--3 article-grid">{visibleArticles.map((article) => <article class="card article-card">{article.featuredImage?.asset?.url && <img src={`${article.featuredImage.asset.url}?auto=format&fit=crop&w=800&h=520&q=82`} alt={article.featuredImage.alt ?? ''} width="800" height="520" loading="lazy" />}<div><p class="article-meta">{new Date(article.publishedAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</p><h3><a href={`/${article.slug}/`}>{article.title}</a></h3><p>{article.excerpt || article.seo?.description}</p><a class="text-link" href={`/${article.slug}/`}>Read article <span aria-hidden="true">→</span></a></div></article>)}</div>{totalJournalPages > 1 && <nav class="pagination" aria-label="Journal pages">{journalPageNumber > 1 && <a href={journalPageNumber === 2 ? '/journal/' : `/journal/page/${journalPageNumber - 1}/`}>← Previous</a>}<span>Page {journalPageNumber} of {totalJournalPages}</span>{journalPageNumber < totalJournalPages && <a href={`/journal/page/${journalPageNumber + 1}/`}>Next →</a>}</nav>}</div></section>}
       {!record && !blogPageNumber && path !== '/thank-you/' && <section class="section service-overview"><div class="container"><div class="section-heading"><div><p class="eyebrow">Our approach</p><h2>{service ? 'A considered approach from brief to delivery.' : 'Let’s create a better workplace.'}</h2></div></div><div class="grid grid--3">{[['Discover', 'We understand your workplace, people and practical requirements.'], ['Design', 'Our team creates a purposeful design with material and cost clarity.'], ['Deliver', 'We coordinate every detail through a considered, reliable handover.']].map(([step, copy], index) => <article class="card"><span class="card__number">0{index + 1}</span><h3>{step}</h3><p>{copy}</p></article>)}</div></div></section>}
-      {path !== '/journal/' && !blogPageNumber && path !== '/collections/' && path !== '/gallery/' && path !== '/thank-you/' && !isPortfolioProject && <section class="section page-cta"><div class="container"><p class="eyebrow">Start your project</p><h2>Ready to create a workplace that works beautifully?</h2><p>Speak with our team about your next office space in Delhi NCR.</p><a class="button" href="/contact/">Book a free consultation <span aria-hidden="true">→</span></a></div></section>}
+      {path !== '/journal/' && !blogPageNumber && path !== '/project/' && path !== '/gallery/' && path !== '/thank-you/' && !isPortfolioProject && <section class="section page-cta"><div class="container"><p class="eyebrow">Start your project</p><h2>Ready to create a workplace that works beautifully?</h2><p>Speak with our team about your next office space in Delhi NCR.</p><a class="button" href="/contact/">Book a free consultation <span aria-hidden="true">→</span></a></div></section>}
     </>
   )}
   <AnimationRuntime />

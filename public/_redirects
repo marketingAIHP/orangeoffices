@@ -1,6 +1,6 @@
 /home/ / 301
 /test/ / 301
-/project/ /collections/ 301
+/collections/ /project/ 301
 /category/all/ /journal/ 301
 /author/roshan/ /journal/ 301
 /author/saarthak/ /journal/ 301
@@ -11,4 +11,4 @@
 /category-sitemap.xml /sitemap-index.xml 301
 /portfolio-category-sitemap.xml /sitemap-index.xml 301
 /author-sitemap.xml /sitemap-index.xml 301
-/portfolio-category/* /collections/ 301
+/portfolio-category/* /project/ 301
