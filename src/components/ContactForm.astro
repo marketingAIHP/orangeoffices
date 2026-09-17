@@ -1,18 +1,19 @@
 <form class="form" id="webform3372594000001064006" name="WebToLeads3372594000001064006" method="post" action="https://crm.zoho.com/crm/WebToLeadForm" accept-charset="UTF-8" data-form="zoho-lead" novalidate>
   <div class="form__status" role="alert" tabindex="-1" hidden></div>
-  <input type="hidden" name="xnQsjsdp" value="227c407ac25cc22a7bd4253778fcbbd1301994b755b784e7c70a217c7356bd18" />
+  <input type="hidden" name="xnQsjsdp" value="879c5d8ceefe237ee721d37315b7d09869e0c38b0d869c3b8ca53e69271d29a2" />
   <input type="hidden" name="zc_gad" id="zc_gad" value="" />
-  <input type="hidden" name="xmIwtLD" value="a9874eb6c7a1cceb76061bce43431541235a5699e957a68359a5620b415a444aad74c71337a5902a1f3dbfa887d9b574" />
+  <input type="hidden" name="xmIwtLD" value="f2560ededc3086d9270897dfba7703c22ccf1a88f19ee985242c6f0efd7c05c17accfd587accf4ca84d27ce0a6af032d" />
   <input type="hidden" name="actionType" value="TGVhZHM=" />
   <input type="hidden" name="returnURL" value="null" />
   <!-- Zoho's honeypot field. Do not remove. -->
   <input class="form__honeypot" type="text" name="aG9uZXlwb3Q" value="" tabindex="-1" autocomplete="off" aria-hidden="true" />
   <div><label for="First_Name">First name <span aria-hidden="true">*</span></label><input id="First_Name" name="First Name" autocomplete="given-name" minlength="2" maxlength="40" required aria-describedby="first-name-error" /><small class="form__error" id="first-name-error"></small></div>
   <div><label for="Last_Name">Last name <span aria-hidden="true">*</span></label><input id="Last_Name" name="Last Name" autocomplete="family-name" minlength="2" maxlength="80" required aria-describedby="last-name-error" /><small class="form__error" id="last-name-error"></small></div>
-  <div class="form__full"><label for="Company">Company <span aria-hidden="true">*</span></label><input id="Company" name="Company" autocomplete="organization" maxlength="200" required aria-describedby="company-error" /><small class="form__error" id="company-error"></small></div>
   <div><label for="Email">Work email <span aria-hidden="true">*</span></label><input id="Email" name="Email" type="email" autocomplete="email" maxlength="100" required aria-describedby="email-error" /><small class="form__error" id="email-error"></small></div>
+  <div><label for="Company">Company <span aria-hidden="true">*</span></label><input id="Company" name="Company" autocomplete="organization" maxlength="200" required aria-describedby="company-error" /><small class="form__error" id="company-error"></small></div>
   <div><label for="Mobile">Mobile <span aria-hidden="true">*</span></label><input id="Mobile" name="Mobile" type="tel" autocomplete="tel" maxlength="30" required aria-describedby="mobile-error" /><small class="form__error" id="mobile-error"></small></div>
-  <div class="form__full"><label for="City">City <span class="form__optional">Optional</span></label><input id="City" name="City" autocomplete="address-level2" maxlength="100" aria-describedby="city-error" /><small class="form__error" id="city-error"></small></div>
+  <div><label for="City">City <span class="form__optional">Optional</span></label><input id="City" name="City" autocomplete="address-level2" maxlength="100" aria-describedby="city-error" /><small class="form__error" id="city-error"></small></div>
+  <div class="form__full"><label for="Description">Description <span class="form__optional">Optional</span></label><textarea id="Description" name="Description" aria-describedby="description-hint description-error"></textarea><small id="description-hint">Tell us about your workspace, approximate area or team size, and target timeline.</small><small class="form__error" id="description-error"></small></div>
   <button class="button" id="formsubmit" type="submit">Book a free consultation <span aria-hidden="true">→</span></button>
   <p class="form__privacy">We’ll use these details only to respond to your enquiry.</p>
 </form>
@@ -20,8 +21,8 @@
   document.querySelectorAll('[data-form="zoho-lead"]').forEach((form) => {
     const status = form.querySelector('.form__status');
     const submit = form.querySelector('button[type="submit"]');
-    const fields = [...form.querySelectorAll('input:not([type="hidden"]):not(.form__honeypot)')];
-    const errorIds = { 'First Name': 'first-name-error', 'Last Name': 'last-name-error', Company: 'company-error', Email: 'email-error', Mobile: 'mobile-error', City: 'city-error' };
+    const fields = [...form.querySelectorAll('input:not([type="hidden"]):not(.form__honeypot), textarea')];
+    const errorIds = { 'First Name': 'first-name-error', 'Last Name': 'last-name-error', Company: 'company-error', Email: 'email-error', Mobile: 'mobile-error', City: 'city-error', Description: 'description-error' };
     const setError = (field, message = '') => {
       const error = form.querySelector(`#${errorIds[field.name]}`);
       if (error) error.textContent = message;
