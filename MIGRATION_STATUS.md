@@ -3,7 +3,7 @@
 - [x] Astro + Cloudflare Worker foundation created.
 - [x] Live visual tokens extracted from Elementor kit and centralized in `src/styles/tokens.css`.
 - [x] Shared accessible layout, core static routes, metadata, Organization/WebSite schema, robots and sitemap implemented.
-- [x] D1 lead ledger migration and Queue producer boundary created; Turnstile, Zoho, Resend and queue consumer require credentials/resource IDs.
+- [x] Contact form connected to the approved Zoho CRM Web-to-Lead form with accessible client-side validation and a local thank-you flow.
 - [x] Core URLs discovered through the public navigation are represented in the route inventory.
 - [x] Imported 111 published WordPress pages, articles and projects into the static content data source; all original routes, content dates and exported SEO fields are retained.
 - [x] Indexed 380 WordPress attachment paths into `data/legacy-media-map.json` for the required R2 copy stage.
@@ -15,9 +15,11 @@
 - [x] Replaced the generic About rendering with a structured, image-led editorial page: hero, company story, mission/vision, core values, journey metrics, differentiators, and CTA.
 - [x] Added an accessible client-logo grid to About, removed client logos from decorative backgrounds, and applied a shared structured content frame, service process, and closing CTA to all standard imported pages.
 - [ ] Obtain owner-authorized WordPress export, signed URL inventory, media manifest, and approved page content/metadata to complete parity migration.
-- [ ] Insert real Cloudflare D1 ID and bind R2/Queues after resource creation; never invent these values.
-- [ ] Migrate original media to R2/Sanity and replace the temporary local hero asset during the media stage.
-- [ ] Implement Zoho/Resend consumer and Turnstile validation once secret values and field map are supplied.
+- [x] Preserve the original `/wp-content/uploads/**` media paths by deploying the migrated files as Worker static assets.
+- [x] Preserve all URLs in the current production sitemap as same-path pages or explicit one-hop redirects.
+- [x] Preserve the existing GTM container, canonical origin, legacy sitemap entry point and WordPress sitemap redirects.
+- [ ] Validate one real Zoho test lead in the production CRM after deployment.
+- [ ] Attach the two production hostnames to the Worker during the approved cutover window.
 
 ## Deliberate deviations / review items
 
@@ -40,4 +42,4 @@
 | Homepage source modules implemented | 13 / 13 major modules |
 | Production build | Passing |
 
-Route/content coverage is 100% for the supplied WXR export. This is not a claim of 100% visual parity: exact screenshot comparison remains blocked because no interactive browser was available in this session. Cloudflare resource bindings, Turnstile, Zoho and Resend also remain deployment-owner tasks because their IDs, credentials and approved field mapping are not present in the repository.
+Route/content coverage is 100% for the supplied WXR export. The production build, Worker upload dry run, internal link/assets crawl and live sitemap parity audit pass. Final deployment, CRM receipt confirmation and production-domain attachment require the Cloudflare/Zoho account owner. Exact screenshot comparison remains blocked because no interactive browser was available in this session.

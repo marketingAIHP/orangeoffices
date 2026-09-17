@@ -1,0 +1,14 @@
+/home/ / 301
+/test/ / 301
+/project/ /collections/ 301
+/category/all/ /journal/ 301
+/author/roshan/ /journal/ 301
+/author/saarthak/ /journal/ 301
+/author/udit/ /journal/ 301
+/post-sitemap.xml /sitemap-index.xml 301
+/page-sitemap.xml /sitemap-index.xml 301
+/portfolio-sitemap.xml /sitemap-index.xml 301
+/category-sitemap.xml /sitemap-index.xml 301
+/portfolio-category-sitemap.xml /sitemap-index.xml 301
+/author-sitemap.xml /sitemap-index.xml 301
+/portfolio-category/* /collections/ 301
