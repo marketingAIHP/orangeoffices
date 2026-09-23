@@ -2881,6 +2881,10 @@ body { line-height: 1.65; }
 .gallery-index figcaption span { color: #62645f; font-size: .82rem; }
 
 .journal-archive { padding-top: clamp(4rem, 7vw, 6rem); }
+.article-tldr { padding: clamp(2.25rem, 4vw, 3.5rem) 0 0; }
+.article-tldr__box { padding: clamp(1.35rem, 3vw, 2.25rem); border-left: 4px solid var(--color-brand); background: #fff3e4; }
+.article-tldr__box .eyebrow { margin-bottom: .7rem; color: var(--color-brand-hover); }
+.article-tldr__box .prose > :last-child { margin-bottom: 0; }
 .article-layout { grid-template-columns: minmax(0, 1fr) minmax(240px, 300px); gap: clamp(3rem, 6vw, 6rem); }
 .article-toc { max-height: calc(100svh - 9rem); overflow-y: auto; }
 

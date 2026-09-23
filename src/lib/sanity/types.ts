@@ -4,7 +4,7 @@ export interface SanityPost {
   _id: string
   title: string
   slug: string
-  excerpt?: string
+  tldr?: PortableTextBlock[]
   body?: PortableTextBlock[]
   publishedAt: string
   modifiedAt?: string
@@ -12,7 +12,5 @@ export interface SanityPost {
   author?: {name?: string; slug?: string; designation?: string; bio?: string; linkedinUrl?: string; image?: {alt?: string; asset?: {url?: string}}}
   categories?: Array<{_id: string; title: string; slug: string}>
   faqs?: Array<{question?: string; answer?: string}>
-  seo?: {title?: string; description?: string; canonicalUrl?: string; noIndex?: boolean; ogTitle?: string; ogDescription?: string; ogImage?: {alt?: string; asset?: {url?: string}}}
-  wordpressId?: number
-  legacyUrl?: string
+  seo?: {title?: string; description?: string}
 }

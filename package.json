@@ -11,6 +11,8 @@
     "build": "astro build",
     "preview": "wrangler dev",
     "check": "astro build --help",
+    "studio": "sanity start",
+    "studio:deploy": "sanity deploy",
     "import:wordpress": "node scripts/import-wordpress.mjs",
     "migrate:media": "node scripts/migrate-legacy-media.mjs",
     "test": "vitest run",
@@ -24,6 +26,7 @@
     "astro": "7.1.5",
     "astro-portabletext": "^0.13.0",
     "groq": "^6.9.2",
+    "styled-components": "^6.5.3",
     "zod": "4.4.3"
   },
   "devDependencies": {
