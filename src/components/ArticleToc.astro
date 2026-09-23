@@ -2,7 +2,7 @@
 interface Heading { id: string; text: string; level: 2 | 3 }
 const { headings = [] } = Astro.props as { headings?: Heading[] };
 ---
-{headings.length >= 3 && (
+{headings.length > 0 && (
   <details class="article-toc" open>
     <summary>On this page</summary>
     <ol>

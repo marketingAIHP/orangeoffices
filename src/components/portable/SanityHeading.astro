@@ -1,0 +1,5 @@
+---
+const {node} = Astro.props
+const id = `article-section-${node._key}`
+---
+{node.style === 'h2' ? <h2 id={id}><slot /></h2> : <h3 id={id}><slot /></h3>}

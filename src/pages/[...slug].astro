@@ -81,6 +81,12 @@ const tocSource = articleHtml || '';
 const tocHeadings = [...tocSource.matchAll(/<h([23])[^>]*>([\s\S]*?)<\/h\1>/gi)]
   .map((match, index) => ({ level: Number(match[1]) as 2 | 3, text: match[2].replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ').trim(), id: `article-section-${index + 1}` }))
   .filter((heading) => heading.text && !/^faqs?$/i.test(heading.text));
+const sanityTocHeadings = (sanityPost?.body ?? []).flatMap((block: any) => {
+  if (block?._type !== 'block' || !['h2', 'h3'].includes(block.style)) return [];
+  const text = (block.children ?? []).map((child: {text?: string}) => child.text ?? '').join('').trim();
+  return text ? [{id: `article-section-${block._key}`, level: Number(block.style.slice(1)) as 2 | 3, text}] : [];
+});
+const visibleTocHeadings = tocHeadings.length > 0 ? tocHeadings : sanityTocHeadings;
 let tocIndex = 0;
 const articleHtmlWithIds = articleHtml?.replace(/<h([23])([^>]*)>([\s\S]*?)<\/h\1>/gi, (full, level, attributes, value) => {
   const text = value.replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ').trim();
@@ -112,7 +118,7 @@ const articleHtmlWithIds = articleHtml?.replace(/<h([23])([^>]*)>([\s\S]*?)<\/h\
                 <article class="prose" set:html={articleHtmlWithIds} />
               </div>
               <aside class="article-layout__aside">
-                <ArticleToc headings={tocHeadings} />
+                <ArticleToc headings={visibleTocHeadings} />
                 <ArticleWorkspaceCta />
               </aside>
             </div>
@@ -143,7 +149,7 @@ const articleHtmlWithIds = articleHtml?.replace(/<h([23])([^>]*)>([\s\S]*?)<\/h\
                 </article>
               </div>
               <aside class="article-layout__aside">
-                <ArticleToc headings={tocHeadings} />
+                <ArticleToc headings={visibleTocHeadings} />
                 <ArticleWorkspaceCta />
               </aside>
             </div>
