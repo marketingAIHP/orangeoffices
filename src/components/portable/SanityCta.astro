@@ -1,4 +1,4 @@
 ---
-const {value} = Astro.props
+const {node} = Astro.props
 ---
-<aside class="content-cta"><h3>{value?.title}</h3>{value?.text && <p>{value.text}</p>}{value?.href && value?.label && <a class="button" href={value.href}>{value.label}</a>}</aside>
+<aside class="content-cta"><h3>{node?.title}</h3>{node?.text && <p>{node.text}</p>}{node?.href && node?.label && <a class="button" href={node.href}>{node.label}</a>}</aside>

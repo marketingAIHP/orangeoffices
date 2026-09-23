@@ -1,5 +1,5 @@
 ---
-const {value} = Astro.props
-const rows = value?.rows ?? []
+const {node} = Astro.props
+const rows = node?.rows ?? []
 ---
-<div class="table-scroll"><table>{value?.caption && <caption>{value.caption}</caption>}<tbody>{rows.map((row: {cells?: string[]}) => <tr>{(row.cells ?? []).map((cell) => <td>{cell}</td>)}</tr>)}</tbody></table></div>
+<div class="table-scroll"><table>{node?.caption && <caption>{node.caption}</caption>}<tbody>{rows.map((row: {cells?: string[]}, rowIndex: number) => <tr>{(row.cells ?? []).map((cell, cellIndex) => rowIndex === 0 ? <th scope="col">{cell}</th> : <td>{cell}</td>)}</tr>)}</tbody></table></div>
