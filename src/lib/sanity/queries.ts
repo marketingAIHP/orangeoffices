@@ -1,7 +1,18 @@
 import {defineQuery} from 'groq'
 
 const postProjection = `{
-  _id, title, "slug": slug.current, body, publishedAt, modifiedAt,
+  _id, title, "slug": slug.current,
+  body[]{
+    ...,
+    _type == "contentImage" => {
+      ...,
+      asset {
+        ...,
+        asset->{url, metadata{dimensions, lqip}}
+      }
+    }
+  },
+  publishedAt, modifiedAt,
   readingTime, tldr,
   featuredImage{alt, caption, asset->{_id, url, metadata{dimensions, lqip}}},
   author->{_id, name, "slug": slug.current, designation, bio, linkedinUrl, image{alt, asset->{url}}},
