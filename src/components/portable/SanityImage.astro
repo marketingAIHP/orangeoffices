@@ -1,6 +1,7 @@
 ---
 const {node} = Astro.props
-const asset = node?.asset
+const image = node?.asset
+const asset = image?.asset
 const width = asset?.metadata?.dimensions?.width ?? 1200
 const height = asset?.metadata?.dimensions?.height ?? 800
 ---
