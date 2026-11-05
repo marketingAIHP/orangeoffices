@@ -1,0 +1,15 @@
+---
+import ContactForm from './ContactForm.astro';
+import type { MicroMarketPath } from '../lib/microMarkets';
+import { microMarkets } from '../lib/microMarkets';
+interface Props { path: MicroMarketPath; }
+const { path } = Astro.props;
+const market = microMarkets[path];
+---
+
+<section class="market-hero" style={`--market-image:url('${market.image}')`}>
+  <div class="container"><p class="eyebrow">{market.eyebrow}</p><h1>{market.heading}</h1><p>{market.overview}</p><div class="hero__actions"><a class="button" href="#market-inquiry">Book a consultation</a><a class="button button--ghost" href="tel:+917861004918">Call +91 78610 04918</a></div></div>
+</section>
+<section class="section"><div class="container market-grid"><div><p class="eyebrow">A considered commercial process</p><h2>Start with the decisions that shape the workplace</h2><p>{market.focus}</p><p>Our team can help define the right brief before progressing to detailed layouts, material choices and project coordination.</p></div><img src={market.image} alt="Completed Orange Offices commercial workplace" width="1600" height="1067" loading="lazy" /></div></section>
+<section class="section section--muted"><div class="container"><p class="eyebrow">Relevant services</p><h2>Support from workplace brief to completed interior</h2><div class="market-links"><a href="/bespoke-office-interior-design/">Bespoke office interior design</a><a href="/flexible-modular-office-design/">Flexible modular office design</a><a href="/modern-office-renovation/">Modern office renovation</a><a href="/project/">Explore completed workplace projects</a><a href="/journal/">Read workplace planning insights</a></div></div></section>
+<section class="market-inquiry" id="market-inquiry"><div class="container market-inquiry__grid"><div><p class="eyebrow">Discuss your workplace</p><h2>Planning an office move, fit-out or renovation?</h2><p>Tell us about your team, location and priorities. We will use that context to prepare for a practical first conversation.</p></div><ContactForm formId={`market-${path.split('/').filter(Boolean)[0]}`} projectTitle={market.eyebrow} submitLabel="Request a consultation" /></div></section>

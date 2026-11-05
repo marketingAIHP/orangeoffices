@@ -1,0 +1,11 @@
+---
+import { whatsappHref } from '../lib/contact';
+
+interface Props { message: string; location: string; }
+const { message, location } = Astro.props;
+const href = whatsappHref(message);
+---
+
+{href && <a class="floating-whatsapp" href={href} data-whatsapp-location={location} aria-label="Chat with Orange Offices on WhatsApp">
+  <span aria-hidden="true">◔</span><span>WhatsApp</span>
+</a>}

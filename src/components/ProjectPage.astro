@@ -1,5 +1,6 @@
 ---
 import { parseProjectDetail, type ProjectRecord } from '../lib/projects';
+import ProjectInquiryForm from './ProjectInquiryForm.astro';
 
 interface Props {
   project: ProjectRecord;
@@ -269,6 +270,7 @@ const data = parseProjectDetail(project, projects);
   )}
 
   {/* 8. HIGH-CONVERSION LEAD GENERATION SECTION */}
+  <ProjectInquiryForm projectTitle={data.title} />
   <section class="project-cta" aria-label="Start Your Project">
     <div class="container project-cta__container">
       <div class="project-cta__box">

@@ -4,7 +4,7 @@ import sanity from '@sanity/astro';
 import { loadEnv } from 'vite';
 
 const env = loadEnv(
-  process.env.NODE_ENV ?? 'development',
+  process.env.DEPLOY_ENV ?? process.env.NODE_ENV ?? 'development',
   process.cwd(),
   '',
 );

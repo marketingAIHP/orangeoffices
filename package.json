@@ -9,6 +9,8 @@
   "scripts": {
     "dev": "astro dev --force",
     "build": "astro build",
+    "build:production": "npm run build",
+    "build:staging": "node scripts/build-staging.mjs",
     "preview": "wrangler dev",
     "check": "astro build --help",
     "studio": "sanity start",
@@ -16,7 +18,9 @@
     "import:wordpress": "node scripts/import-wordpress.mjs",
     "migrate:media": "node scripts/migrate-legacy-media.mjs",
     "test": "vitest run",
-    "deploy": "wrangler deploy"
+    "deploy": "wrangler deploy",
+    "deploy:staging:dry-run": "node scripts/deploy-staging.mjs --dry-run",
+    "deploy:staging": "node scripts/deploy-staging.mjs"
   },
   "dependencies": {
     "@astrojs/cloudflare": "14.1.6",

@@ -1,0 +1,17 @@
+---
+import ContactForm from './ContactForm.astro';
+import { calculatorConfig } from '../lib/calculator';
+---
+
+<section class="calculator" id="fit-out-calculator" aria-labelledby="calculator-heading">
+  <div class="container calculator__grid">
+    <div class="calculator__intro">
+      <p class="eyebrow">Plan your fit-out</p>
+      <h2 id="calculator-heading">Office Fit-Out Cost Calculator</h2>
+      <p>Share your project requirements to help our team understand your workspace needs and prepare an indicative fit-out estimate.</p>
+      <ul class="calculator__benefits" aria-label="Calculator benefits"><li><span aria-hidden="true">⌂</span><div><strong>Tailored to Your Workspace</strong><small>Context around your brief, team and space.</small></div></li><li><span aria-hidden="true">◇</span><div><strong>Multiple Finish Options</strong><small>Choose the direction that suits your requirements.</small></div></li><li><span aria-hidden="true">↗</span><div><strong>Expert Project Consultation</strong><small>A practical next step with our workplace team.</small></div></li></ul>
+      <p class="calculator__pending" role="status">Pricing and delivery ranges are subject to business approval. Final estimates will be shared after reviewing your project requirements.</p>
+    </div>
+    <ContactForm formId="fit-out-calculator" calculator submitLabel="Request an indicative estimate" />
+  </div>
+</section>

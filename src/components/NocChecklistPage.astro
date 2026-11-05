@@ -1,0 +1,20 @@
+---
+import ContactForm from './ContactForm.astro';
+---
+
+<section class="noc-checklist">
+  <div class="container noc-checklist__grid">
+    <div>
+      <p class="eyebrow">Project planning resource</p>
+      <h1>Delhi NCR Commercial Office Fit-Out &amp; Building NOC Checklist</h1>
+      <p>Register your interest in a practical project-planning checklist for commercial office fit-outs in Delhi NCR.</p>
+      <p>The final resource will distinguish general planning guidance from building-specific and official requirements. Confirm every approval requirement with the relevant building management, authority, and professional adviser.</p>
+      <p class="calculator__pending" id="noc-download-status">The downloadable checklist is pending legal and business review, so no document is offered yet.</p>
+      <button class="button" type="button" disabled aria-describedby="noc-download-status">Download checklist (pending approval)</button>
+    </div>
+    <div class="noc-checklist__form">
+      <h2>Request the checklist</h2>
+      <ContactForm formId="noc-checklist" projectTitle="Delhi NCR Commercial Office Fit-Out & Building NOC Checklist" submitLabel="Request the checklist" />
+    </div>
+  </div>
+</section>

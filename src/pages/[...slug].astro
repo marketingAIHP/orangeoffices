@@ -19,6 +19,10 @@ import ArticleWorkspaceCta from '../components/ArticleWorkspaceCta.astro';
 import ArticleAuthor from '../components/ArticleAuthor.astro';
 import AnimationRuntime from '../components/AnimationRuntime.astro';
 import GalleryPage from '../components/GalleryPage.astro';
+import CostCalculator from '../components/CostCalculator.astro';
+import NocChecklistPage from '../components/NocChecklistPage.astro';
+import MicroMarketPage from '../components/MicroMarketPage.astro';
+import { microMarkets, type MicroMarketPath } from '../lib/microMarkets';
 import { getAllPosts } from '../lib/sanity/posts';
 import type { SanityPost } from '../lib/sanity/types';
 
@@ -36,6 +40,7 @@ const record = wordpressRecords.find((item) => item.path === path);
 const sanityPost = sanityPosts.find((item) => `/${item.slug}/` === path);
 if (!page && !record && !sanityPost) return Astro.redirect('/404/');
 const service = services.find(([, href]) => href === path);
+const microMarketPath = path in microMarkets ? path as MicroMarketPath : undefined;
 const articles = [...sanityPosts].sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
 const relatedArticles = sanityPost
   ? articles.filter((article) => article._id !== sanityPost._id).sort((a, b) => {
@@ -97,7 +102,7 @@ const articleHtmlWithIds = articleHtml?.replace(/<h([23])([^>]*)>([\s\S]*?)<\/h\
 ---
 <BaseLayout title={title} description={description} noindex={path === '/thank-you/'} article={sanityPost} articleMeta={isArticle ? { headline: heading, description, publishedAt: articlePublishedAt, modifiedAt: articleModifiedAt, image: articleImage, author: sanityPost?.author?.name } : undefined}>
   {isArticle && <ArticleHero title={heading} description={description} image={articleImage} imageAlt={articleImageAlt} path={path} category={articleCategory} publishedAt={articlePublishedAt} modifiedAt={articleModifiedAt} readingTime={articleReadingTime} author={sanityPost?.author} />}
-  {path !== '/about/' && path !== '/clients/' && path !== '/project/' && path !== '/contact/' && path !== '/gallery/' && !journalPageNumber && !isPortfolioProject && !isArticle && <PageHero eyebrow={eyebrow} title={heading} description={description} image={sanityPost?.featuredImage?.asset?.url || record?.image} meta={sanityPost ? `Published ${sanityPost.publishedAt.slice(0, 10)}` : undefined} article={isArticle} />}
+  {path !== '/about/' && path !== '/clients/' && path !== '/project/' && path !== '/contact/' && path !== '/gallery/' && path !== '/delhi-ncr-commercial-office-fit-out-building-noc-checklist/' && !microMarketPath && !journalPageNumber && !isPortfolioProject && !isArticle && <PageHero eyebrow={eyebrow} title={heading} description={description} image={sanityPost?.featuredImage?.asset?.url || record?.image} meta={sanityPost ? `Published ${sanityPost.publishedAt.slice(0, 10)}` : undefined} article={isArticle} />}
   {path === '/about/' && <AboutPage />}
   {path === '/clients/' && <ClientsPage logos={clientLogos} />}
   {path === '/services/' && <ServicesPage />}
@@ -105,7 +110,10 @@ const articleHtmlWithIds = articleHtml?.replace(/<h([23])([^>]*)>([\s\S]*?)<\/h\
   {path === '/project/' && <CollectionsPage projects={projects} />}
   {path === '/contact/' && <ContactPage />}
   {path === '/gallery/' && <GalleryPage />}
+  {path === '/delhi-ncr-commercial-office-fit-out-building-noc-checklist/' && <NocChecklistPage />}
+  {microMarketPath && <MicroMarketPage path={microMarketPath} />}
   {isPortfolioProject && record && <ProjectPage project={record} projects={projects} />}
+  {service && <CostCalculator />}
 
 
   {path !== '/contact/' && path !== '/about/' && path !== '/clients/' && path !== '/services/' && (

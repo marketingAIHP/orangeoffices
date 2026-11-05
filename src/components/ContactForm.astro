@@ -1,4 +1,9 @@
-<form class="form" id="webform3372594000001064006" name="WebToLeads3372594000001064006" method="post" action="https://crm.zoho.com/crm/WebToLeadForm" accept-charset="UTF-8" data-form="zoho-lead" novalidate>
+---
+interface Props { formId?: string; projectTitle?: string; calculator?: boolean; submitLabel?: string; }
+const { formId = 'contact-consultation', projectTitle, calculator = false, submitLabel = 'Book a free consultation' } = Astro.props;
+const fieldId = (name: string) => `${formId}-${name}`;
+---
+<form class:list={['form', { 'form--calculator': calculator }]} id={formId} name="WebToLeads3372594000001064006" method="post" action="https://crm.zoho.com/crm/WebToLeadForm" accept-charset="UTF-8" data-form="zoho-lead" data-project-title={projectTitle} data-calculator={calculator || undefined} novalidate>
   <div class="form__status" role="alert" tabindex="-1" hidden></div>
   <input type="hidden" name="xnQsjsdp" value="879c5d8ceefe237ee721d37315b7d09869e0c38b0d869c3b8ca53e69271d29a2" />
   <input type="hidden" name="zc_gad" id="zc_gad" value="" />
@@ -7,24 +12,26 @@
   <input type="hidden" name="returnURL" value="null" />
   <!-- Zoho's honeypot field. Do not remove. -->
   <input class="form__honeypot" type="text" name="aG9uZXlwb3Q" value="" tabindex="-1" autocomplete="off" aria-hidden="true" />
-  <div><label for="First_Name">First name <span aria-hidden="true">*</span></label><input id="First_Name" name="First Name" autocomplete="given-name" minlength="2" maxlength="40" required aria-describedby="first-name-error" /><small class="form__error" id="first-name-error"></small></div>
-  <div><label for="Last_Name">Last name <span aria-hidden="true">*</span></label><input id="Last_Name" name="Last Name" autocomplete="family-name" minlength="2" maxlength="80" required aria-describedby="last-name-error" /><small class="form__error" id="last-name-error"></small></div>
-  <div><label for="Email">Work email <span aria-hidden="true">*</span></label><input id="Email" name="Email" type="email" autocomplete="email" maxlength="100" required aria-describedby="email-error" /><small class="form__error" id="email-error"></small></div>
-  <div><label for="Company">Company <span aria-hidden="true">*</span></label><input id="Company" name="Company" autocomplete="organization" maxlength="200" required aria-describedby="company-error" /><small class="form__error" id="company-error"></small></div>
-  <div><label for="Mobile">Mobile <span aria-hidden="true">*</span></label><input id="Mobile" name="Mobile" type="tel" autocomplete="tel" maxlength="30" required aria-describedby="mobile-error" /><small class="form__error" id="mobile-error"></small></div>
-  <div><label for="City">City <span class="form__optional">Optional</span></label><input id="City" name="City" autocomplete="address-level2" maxlength="100" aria-describedby="city-error" /><small class="form__error" id="city-error"></small></div>
-  <div class="form__full"><label for="Description">Description <span class="form__optional">Optional</span></label><textarea id="Description" name="Description" aria-describedby="description-hint description-error"></textarea><small id="description-hint">Tell us about your workspace, approximate area or team size, and target timeline.</small><small class="form__error" id="description-error"></small></div>
-  <button class="button" id="formsubmit" type="submit">Book a free consultation <span aria-hidden="true">→</span></button>
+  <div><label for={fieldId('first-name')}>First name <span aria-hidden="true">*</span></label><input id={fieldId('first-name')} name="First Name" autocomplete="given-name" placeholder="Your first name" minlength="2" maxlength="40" required aria-describedby={fieldId('first-name-error')} /><small class="form__error" id={fieldId('first-name-error')}></small></div>
+  <div><label for={fieldId('last-name')}>Last name <span aria-hidden="true">*</span></label><input id={fieldId('last-name')} name="Last Name" autocomplete="family-name" placeholder="Your last name" minlength="2" maxlength="80" required aria-describedby={fieldId('last-name-error')} /><small class="form__error" id={fieldId('last-name-error')}></small></div>
+  <div><label for={fieldId('email')}>Work email <span aria-hidden="true">*</span></label><input id={fieldId('email')} name="Email" type="email" autocomplete="email" placeholder="name@company.com" maxlength="100" required aria-describedby={fieldId('email-error')} /><small class="form__error" id={fieldId('email-error')}></small></div>
+  <div><label for={fieldId('company')}>Company <span aria-hidden="true">*</span></label><input id={fieldId('company')} name="Company" autocomplete="organization" placeholder="Company name" maxlength="200" required aria-describedby={fieldId('company-error')} /><small class="form__error" id={fieldId('company-error')}></small></div>
+  <div><label for={fieldId('mobile')}>Mobile number <span aria-hidden="true">*</span></label><input id={fieldId('mobile')} name="Mobile" type="tel" autocomplete="tel" placeholder="Your mobile number" minlength="7" maxlength="30" pattern="[0-9+() -]{7,30}" required aria-describedby={fieldId('mobile-error')} /><small class="form__error" id={fieldId('mobile-error')}></small></div>
+  <div><label for={fieldId('city')}>City <span class="form__optional">Optional</span></label><input id={fieldId('city')} name="City" autocomplete="address-level2" maxlength="100" aria-describedby={fieldId('city-error')} /><small class="form__error" id={fieldId('city-error')}></small></div>
+  {calculator && <><div><label for={fieldId('area')}>Carpet area (sq. ft.) <span aria-hidden="true">*</span></label><input id={fieldId('area')} data-context-field="Carpet area" inputmode="numeric" pattern="[0-9]+" maxlength="10" required /></div><div><label for={fieldId('team-size')}>Team size <span aria-hidden="true">*</span></label><select id={fieldId('team-size')} data-context-field="Team size" required><option value="">Select team size</option><option>25 seats</option><option>50 seats</option><option>100+ seats</option><option>Custom</option></select></div><div><label for={fieldId('location')}>Project location <span aria-hidden="true">*</span></label><select id={fieldId('location')} data-context-field="Project location" required><option value="">Select location</option><option>Gurgaon</option><option>Noida</option><option>Delhi</option></select></div><div><label for={fieldId('finish-tier')}>Finish tier <span aria-hidden="true">*</span></label><select id={fieldId('finish-tier')} data-context-field="Finish tier" required><option value="">Select finish tier</option><option>Standard Modular</option><option>Bespoke Corporate</option><option>Luxury Executive</option></select></div></>}
+  {projectTitle && <><div><label for={fieldId('area')}>Office size <span class="form__optional">Optional</span></label><input id={fieldId('area')} data-project-field="Office size" inputmode="numeric" maxlength="40" /></div><div><label for={fieldId('location')}>Project location <span class="form__optional">Optional</span></label><input id={fieldId('location')} data-project-field="Project location" autocomplete="address-level2" maxlength="100" /></div></>}
+  <div class="form__full"><label for={fieldId('description')}>Description <span class="form__optional">Optional</span></label><textarea id={fieldId('description')} name="Description" aria-describedby={`${fieldId('description-hint')} ${fieldId('description-error')}`}></textarea><small id={fieldId('description-hint')}>Tell us about your workspace, approximate area or team size, and target timeline.</small><small class="form__error" id={fieldId('description-error')}></small></div>
+  <button class="button" type="submit" data-label={submitLabel}>{submitLabel} <span aria-hidden="true">→</span></button>
   <p class="form__privacy">We’ll use these details only to respond to your enquiry.</p>
 </form>
 <script is:inline>
   document.querySelectorAll('[data-form="zoho-lead"]').forEach((form) => {
     const status = form.querySelector('.form__status');
     const submit = form.querySelector('button[type="submit"]');
-    const fields = [...form.querySelectorAll('input:not([type="hidden"]):not(.form__honeypot), textarea')];
+    const fields = [...form.querySelectorAll('input:not([type="hidden"]):not(.form__honeypot), textarea, select')];
     const errorIds = { 'First Name': 'first-name-error', 'Last Name': 'last-name-error', Company: 'company-error', Email: 'email-error', Mobile: 'mobile-error', City: 'city-error', Description: 'description-error' };
     const setError = (field, message = '') => {
-      const error = form.querySelector(`#${errorIds[field.name]}`);
+      const error = form.querySelector(`#${form.id}-${errorIds[field.name]}`);
       if (error) error.textContent = message;
       field.setAttribute('aria-invalid', message ? 'true' : 'false');
     };
@@ -35,13 +42,21 @@
         let message = '';
         if (field.required && !value) message = 'This field is required.';
         else if ((field.name === 'First Name' || field.name === 'Last Name') && value.length < 2) message = 'Enter at least 2 characters.';
-        else if (field.name === 'Email' && !field.validity.valid) message = 'Enter a valid email address.';
+        else if (!field.validity.valid) message = field.name === 'Email' ? 'Enter a valid email address.' : field.name === 'Mobile' ? 'Enter a valid mobile number.' : 'Enter a valid value.';
         setError(field, message);
         if (message && !firstInvalid) firstInvalid = field;
       });
       return firstInvalid;
     };
     fields.forEach((field) => field.addEventListener('input', () => setError(field)));
+    if (form.dataset.calculator) {
+      let started = false;
+      form.addEventListener('focusin', () => {
+        if (started) return;
+        started = true;
+        if (typeof window.gtag === 'function') window.gtag('event', 'calculator_start', { page_path: location.pathname });
+      });
+    }
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
       status.hidden = true;
@@ -63,15 +78,25 @@
       submit.firstChild.textContent = 'Sending… ';
       try {
         if (typeof _wfa_track !== 'undefined' && _wfa_track.wfa_submit) _wfa_track.wfa_submit(event);
-        const response = await fetch(form.action, { method: 'POST', body: new FormData(form), cache: 'no-cache' });
+        const formData = new FormData(form);
+        const projectDetails = [...form.querySelectorAll('[data-project-field], [data-context-field]')].map((field) => `${field.dataset.projectField || field.dataset.contextField}: ${field.value.trim()}`).filter((value) => !value.endsWith(': '));
+        if (form.dataset.projectTitle) projectDetails.unshift(`Related project: ${form.dataset.projectTitle}`);
+        let attribution = {};
+        try { attribution = JSON.parse(sessionStorage.getItem('orange-offices-attribution') || '{}'); } catch { sessionStorage.removeItem('orange-offices-attribution'); }
+        const attributionDetails = Object.entries(attribution).map(([key, value]) => `${key}: ${value}`);
+        projectDetails.push(...attributionDetails);
+        if (projectDetails.length) formData.set('Description', [formData.get('Description'), ...projectDetails].filter(Boolean).join('\n'));
+        const response = await fetch(form.action, { method: 'POST', body: formData, cache: 'no-cache' });
         const contentType = response.headers.get('content-type') || '';
         const result = contentType.includes('application/json') ? await response.json() : null;
         if (!response.ok || result?.actionsubmit === 'error_msg' || result?.invalidCaptcha === 'true') throw new Error(result?.message || result?.actionvalue || 'We could not accept your enquiry right now.');
         if (typeof _wfa_track !== 'undefined' && _wfa_track.wfa_post_submit) _wfa_track.wfa_post_submit(event);
+        if (typeof window.gtag === 'function') window.gtag('event', 'generate_lead', { form_id: form.id, page_path: location.pathname });
+        if (form.dataset.calculator && typeof window.gtag === 'function') window.gtag('event', 'calculator_lead', { page_path: location.pathname });
         location.assign('/thank-you/');
       } catch (error) {
         status.textContent = `${error.message} Call +91 78610 04918 or try again.`;
-        status.hidden = false; status.focus(); submit.disabled = false; submit.removeAttribute('aria-busy'); submit.firstChild.textContent = 'Book a free consultation ';
+        status.hidden = false; status.focus(); submit.disabled = false; submit.removeAttribute('aria-busy'); submit.firstChild.textContent = `${submit.dataset.label} `;
       }
     });
   });

@@ -1,0 +1,16 @@
+---
+import ContactForm from './ContactForm.astro';
+interface Props { projectTitle: string; }
+const { projectTitle } = Astro.props;
+---
+
+<section class="project-inquiry" aria-labelledby="project-inquiry-heading">
+  <div class="container project-inquiry__grid">
+    <div>
+      <p class="eyebrow">Discuss your project</p>
+      <h2 id="project-inquiry-heading">Planning a Similar Workspace?</h2>
+      <p>Share your requirements and our team will help you take the next practical step.</p>
+    </div>
+    <ContactForm formId="project-inquiry" projectTitle={projectTitle} submitLabel="Get a Similar Project Estimate" />
+  </div>
+</section>
